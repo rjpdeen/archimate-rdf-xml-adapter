@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 
+
 GRAPHDB_URL="${GRAPHDB_URL:-http://graphdb:7200}"
 REPO_ID="${GRAPHDB_REPO_ID:-archimate_phase1}"
 IMPORT_FILE="${IMPORT_FILE:-/init/archimate.ttl}"

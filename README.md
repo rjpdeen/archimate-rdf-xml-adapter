@@ -45,20 +45,21 @@ ex:app-1 archimate:serving ex:actor-1 .
 
 ## Graph usage in GraphDB
 
-- default graph = ontology / base
-- named graph = model instance data for import / export / roundtrip
+The GraphDB setup uses two distinct kinds of data:
+
+- **default graph** = ontology / base model
+- **named graph** = imported model instance data
 
 Important:
 
-- the ontology/base must be loaded separately
-- model data lives in a named graph
+- `archimate.ttl` is loaded automatically as the base model in GraphDB
+- that base model remains present when you import an XML file
+- importing an XML file creates or updates a **separate model graph** in GraphDB
 - relationship metadata belongs to the quoted triple, not to the relationship property itself
 
 ## Phase 1 scope
 
 This phase supports only the **Business** and **Application** scope of the adapter, without diagram information.
-
-The implementation has been built incrementally and tested in batches.
 
 ## Supported element types
 
@@ -167,7 +168,12 @@ archimate-rdf-xml-adapter/
 │  └─ graphdb/
 │     ├─ docker-compose.yml
 │     └─ init/
-│        └─ init-graphdb.sh
+│        ├─ archimate.ttl
+│        ├─ GRAPHDB_FREE_v11.3.license
+│        ├─ init-graphdb.sh
+│        ├─ minimal-mendoza-base.ttl
+│        ├─ minimal-phase1-model.ttls
+│        └─ repo-config.ttl
 ├─ ontology/
 ├─ out/
 ├─ .gitignore
@@ -177,10 +183,10 @@ archimate-rdf-xml-adapter/
 
 ## Working directories
 
-- `tests/fixtures/xml/` contains XML fixtures used by automated tests.
-- `examples/xml/` is intended for committed example XML files.
-- `out/` is the local working directory for XML files you want to import or export during manual runs.
-- `docker/graphdb/home/` is GraphDB runtime state and should not be committed to Git.
+- `tests/fixtures/xml/`: XML fixtures used by automated tests
+- `examples/xml/`: example XML files committed to the repository
+- `out/`: local working XML files used during manual import/export runs
+- `docker/graphdb/home/`: GraphDB runtime state created locally; this should not be committed
 
 ## Requirements
 
@@ -189,21 +195,9 @@ archimate-rdf-xml-adapter/
 - GraphDB
 - pytest
 
-## Installation
+## Quick start: GraphDB only
 
-Create a virtual environment and install the package in editable mode:
-
-### Windows PowerShell
-
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -e .
-```
-
-## Starting GraphDB
-
-Go to the GraphDB Docker folder and start the container:
+If you only want to start GraphDB locally, Docker is sufficient:
 
 ```powershell
 cd docker/graphdb
@@ -222,56 +216,65 @@ The GraphDB Workbench is normally available at:
 http://localhost:7200
 ```
 
+## Python setup for tools and tests
+
+You only need this section if you want to:
+
+- run the Python import/export tools
+- run the automated tests
+- work on the adapter code itself
+
+If you only want to start GraphDB, the Docker step above is enough.
+
+Create a virtual environment and install the package in editable mode:
+
+### Windows PowerShell
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e .
+```
+
 ## GraphDB repository
 
-The setup assumes a GraphDB repository with id:
+The tools and integration tests assume a GraphDB repository with id:
 
 ```text
 archimate_phase1
 ```
 
-The `graphdb-init` container creates this repository automatically when you start the Docker setup.
+This repository is created automatically by the Docker GraphDB init flow.
 
 ## Loading the ontology/base
 
-The default graph must contain the ontology/base. The model data must live in a named graph.
+No manual action is needed after cloning for the ontology/base initialization.
 
-Use your GraphDB setup and loading steps for:
+When you start GraphDB with:
 
-- the Mendoza ontology
-- any minimal base data needed for your current phase
-
-## Configuration defaults
-
-Project-level Python defaults are centralized in:
-
-```text
-src/archimate_adapter/config.py
+```powershell
+cd docker/graphdb
+docker compose up -d
 ```
 
-This file contains the defaults used by the helper scripts, such as:
+the init flow automatically creates the repository and loads `archimate.ttl` into the default graph as the base model.
 
-- GraphDB base URL
-- repository id
-- named graph IRI
-- mapping file paths
-- default import XML path
-- default export XML path
+That base model is not deleted when you import an XML file. XML import writes the imported model to a separate named graph.
 
-## How to use this repository
+The first manual action after cloning is therefore not ontology loading, but choosing the ArchiMate Exchange XML file you want to import into GraphDB.
 
-A typical usage flow is:
+## Typical first run after cloning
 
-1. start GraphDB
-2. make sure the repository `archimate_phase1` exists
-3. load the Mendoza ontology and base data into the **default graph**
-4. choose a **named graph** for your model instance data
-5. import an ArchiMate Exchange XML file into canonical RDF
-6. inspect or validate the canonical RDF in GraphDB
-7. export the canonical RDF back to ArchiMate Exchange XML
-8. run the automated tests to verify the roundtrip behavior
+1. start GraphDB with Docker
+2. choose or copy the XML file you want to import into `out/`
+3. update the import path in `src/archimate_adapter/config.py` if needed
+4. run the import tool to transform XML into canonical RDF in GraphDB
+5. optionally run the export tool or tests
 
-## Quick start
+By default, the import tool reads: out/phase1_supported_types.xml
+If you want to import a different XML file, update the default import path in src/archimate_adapter/config.py.
+
+## Quick start with tools
 
 ### 1. Start GraphDB
 
@@ -280,7 +283,7 @@ cd docker/graphdb
 docker compose up -d
 ```
 
-### 2. Import XML into canonical RDF using the helper script
+### 2. Choose the XML file to import
 
 Place the XML file you want to import in `out/`, for example:
 
@@ -288,56 +291,30 @@ Place the XML file you want to import in `out/`, for example:
 out/phase1_supported_types.xml
 ```
 
-Then run:
+If you want to use a different filename, update the default import path in:
+
+```text
+src/archimate_adapter/config.py
+```
+
+### 3. Import XML into canonical RDF
 
 ```powershell
 py tools/import_xml_to_graphdb.py
 ```
 
-### 3. Export canonical RDF back to XML using the helper script
+This transforms the selected XML file into canonical RDF in GraphDB in a separate named model graph.
+
+### 4. Export canonical RDF back to XML
 
 ```powershell
 py tools/export_graphdb_to_xml.py
 ```
 
-The exported XML is written to the path configured in `config.py`.
+By default, the tools use settings from:
 
-## Example direct service usage
-
-### Import XML into canonical RDF
-
-```python
-from archimate_adapter.services.import_xml_to_canonical_rdf import (
-    ImportXmlToCanonicalRdfService,
-)
-
-service = ImportXmlToCanonicalRdfService(
-    graphdb_base_url="http://localhost:7200",
-    repository_id="archimate_phase1",
-    element_mapping_path="src/archimate_adapter/mapping/element_types.yaml",
-    relationship_mapping_path="src/archimate_adapter/mapping/relationship_types.yaml",
-    graph_iri="https://example.org/graph/model",
-)
-
-service.import_from_file("tests/fixtures/xml/phase1_supported_types.xml")
-```
-
-### Export canonical RDF back to XML
-
-```python
-from archimate_adapter.services.export_canonical_rdf_to_xml import (
-    ExportCanonicalRdfToXmlService,
-)
-
-service = ExportCanonicalRdfToXmlService(
-    graphdb_base_url="http://localhost:7200",
-    repository_id="archimate_phase1",
-    element_mapping_path="src/archimate_adapter/mapping/element_types.yaml",
-    relationship_mapping_path="src/archimate_adapter/mapping/relationship_types.yaml",
-    graph_iri="https://example.org/graph/model",
-)
-
-service.export_to_file("out/exported-from-graphdb.xml")
+```text
+src/archimate_adapter/config.py
 ```
 
 ## How the adapter works
@@ -346,12 +323,12 @@ service.export_to_file("out/exported-from-graphdb.xml")
 
 - the parser reads ArchiMate Exchange XML
 - XML types are translated via YAML mappings to Mendoza RDF classes and predicates
-- the model is inserted as canonical triples into GraphDB
+- the model is inserted as canonical triples into a named graph in GraphDB
 - relationship metadata is stored via RDF-star on the quoted triple
 
 ### RDF to XML
 
-- export queries read element and relationship data from the named graph
+- an export query reads element and relationship data from the named graph
 - the mapping determines the translation back to Exchange XML `xsi:type`
 - the writer outputs an ArchiMate Exchange XML file
 
@@ -377,6 +354,8 @@ In GraphDB visualization, multiple predicates may appear on one edge, for exampl
 This is expected behavior and not a roundtrip bug.
 
 ## Running tests
+
+You need the Python setup section above if you want to run tests.
 
 ### Run one batch test
 
@@ -421,28 +400,16 @@ Each batch usually has one combined test file.
 The usual workflow is:
 
 1. start GraphDB
-2. make sure repository `archimate_phase1` exists
-3. load ontology/base into the default graph
-4. import a supported Exchange XML model into a named graph
-5. run batch tests
-6. run the mixed roundtrip test
-7. export the model back to XML
-8. optionally inspect the exported XML manually in Archi or another tool
-
-## Git workflow
-
-To commit and push to GitHub:
-
-```powershell
-git status
-git add .
-git commit -m "Initial commit"
-git push -u origin main
-```
+2. choose an Exchange XML file and import it into a named graph
+3. inspect the imported model in GraphDB
+4. run batch tests if needed
+5. run the mixed roundtrip test
+6. export the model back to XML
+7. optionally inspect the exported XML manually in Archi or another tool
 
 ## Status
 
-The Phase 1 prototype adapter supports a broad Business and Application subset with roundtrip through GraphDB and RDF-star relationship metadata.
+The Phase 1 prototype adapter now supports a broad Business and Application subset with roundtrip through GraphDB and RDF-star relationship metadata.
 
 The next logical step after Phase 1 is extension toward:
 

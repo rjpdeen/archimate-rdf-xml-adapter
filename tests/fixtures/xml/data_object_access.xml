@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Data Object Access Model</name>
+  <elements>
+    <element identifier="app-1" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Case App</name>
+      <documentation xml:lang="en">Application component.</documentation>
+    </element>
+    <element identifier="data-1" xsi:type="DataObject">
+      <name xml:lang="en">Case Record</name>
+      <documentation xml:lang="en">Data object containing case data.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-4"
+                  source="app-1"
+                  target="data-1"
+                  xsi:type="Access">
+      <name xml:lang="en">accesses</name>
+      <documentation xml:lang="en">Application component accesses data object.</documentation>
+    </relationship>
+  </relationships>
+</model>

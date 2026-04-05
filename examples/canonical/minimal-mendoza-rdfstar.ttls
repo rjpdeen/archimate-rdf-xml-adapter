@@ -1,0 +1,43 @@
+@prefix ex: <https://example.org/archi/model/> .
+@prefix archimate: <https://purl.org/archimate#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+#################################################################
+# Ontology terms used in this minimal example
+#################################################################
+
+archimate:ApplicationComponent a owl:Class .
+archimate:BusinessActor a owl:Class .
+
+archimate:serving a owl:ObjectProperty .
+
+archimate:identifier a owl:DatatypeProperty .
+archimate:name a owl:DatatypeProperty .
+
+#################################################################
+# Elements
+#################################################################
+
+ex:app-1 a archimate:ApplicationComponent ;
+    archimate:identifier "app-1" ;
+    archimate:name "My Application"@en .
+
+ex:actor-1 a archimate:BusinessActor ;
+    archimate:identifier "actor-1" ;
+    archimate:name "Actor 1"@en .
+
+#################################################################
+# Mendoza-native relationship as object property assertion
+#################################################################
+
+ex:app-1 archimate:serving ex:actor-1 .
+
+#################################################################
+# Relationship metadata for XML roundtrip via RDF-star
+#################################################################
+
+<< ex:app-1 archimate:serving ex:actor-1 >>
+    archimate:identifier "rel-1" ;
+    archimate:name "serves"@en ;
+    dct:description "Application serves actor in this model."@en .

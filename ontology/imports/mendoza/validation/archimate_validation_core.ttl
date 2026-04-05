@@ -1,0 +1,284 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix archimate: <https://purl.org/archimate#> .
+@base <https://purl.org/archimate/validation#> .
+
+### SHACL Validation for ArchiMate Basic Constraints
+<#> rdf:type owl:Ontology ;
+    owl:imports <https://purl.org/archimate/owl> ;
+    rdfs:label "ArchiMate Basic Validation Rules" ;
+    rdfs:comment "Level 1 Core Validation: universal model quality and graph integrity constraints. Validates concept requirements (identifier, name, documentation), specialization relationship integrity (same-type, no self-loops, depth), and structural relationship integrity (no circular/self composition/aggregation, composition part uniqueness). For metamodel pattern rules, see archimate_validation_metamodel.ttl. For per-element-type relationship combinations, see archimate_validation_<layer>.ttl." ;
+    dct:creator "Alberto D. Mendoza" ;
+    dct:created "2026-02-10"^^xsd:date ;
+    dct:modified "2026-02-20"^^xsd:date ;
+    owl:versionInfo "Alpha" ;
+    sh:declare [
+        sh:prefix "archimate" ;
+        sh:namespace "https://purl.org/archimate#"^^xsd:anyURI ;
+    ] , [
+        sh:prefix "rdf" ;
+        sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+    ] , [
+        sh:prefix "rdfs" ;
+        sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+    ] , [
+        sh:prefix "owl" ;
+        sh:namespace "http://www.w3.org/2002/07/owl#"^^xsd:anyURI ;
+    ] .
+
+
+### NOTES
+# Level 1 Core Validation — Universal model quality and graph integrity.
+#
+# This file focuses on:
+# - Universal concept requirements (identifier, name, documentation)
+# - Concept uniqueness constraints
+# - Specialization relationship validation (same-type constraint, depth check)
+# - Relationship structural integrity (no circular/self composition/aggregation,
+#   composition part uniqueness)
+#
+# Organization:
+# - Section 1: Universal Concept Requirements
+# - Section 2: Specialization Relationship Validation (same-type, depth)
+# - Section 3: Structural Relationship Validation (composition, aggregation)
+#
+# Severity levels:
+# - sh:Violation (default): Hard constraints, appropriate for transactional SHACL
+# - sh:Info: DeepSpecializationCheck — batch/reporting use only
+#
+# owl:imports note:
+# The ontology declares @base <https://purl.org/archimate#> so its IRI is
+# <https://purl.org/archimate#>. We import <https://purl.org/archimate/owl>
+# which is the PURL that redirects to the raw Turtle file. These URIs differ
+# but engines resolve owl:imports by dereferencing the URL, so the import
+# works. purl.org does not support content negotiation (Accept headers) —
+# separate PURLs are used for each representation (/archimate → SKOS HTML,
+# /archimate/owl → OWL Turtle).
+#
+# To execute validation:
+# 1. Load base ArchiMate ontology (archimate.ttl)
+# 2. Load archimate_validation_core.ttl (Level 1) <--<this file>
+# 3. Load archimate_validation_metamodel.ttl (Level 2: abstract metamodel pattern rules)
+# 4. Load archimate_validation_<layer>.ttl files (Level 3, optional)
+# 5. Load your model data
+# 6. Run SHACL validation
+
+
+
+### 1. Universal Concepts Requirements
+
+# All realized elements and relationships must have required attributes
+<#RealizedConceptShape> rdf:type sh:NodeShape ;
+    sh:targetClass owl:NamedIndividual ;
+    rdfs:label "Realized Concept Requirements" ;
+    rdfs:comment "Enforces that every realized ArchiMate concept (owl:NamedIndividual instance) has exactly one identifier and name, and at most one documentation value. Targets owl:NamedIndividual to exclude ontology class definitions, which are instances of archimate:Concept via class punning but are not realized model elements." ;
+    sh:or (
+        [ sh:not [ sh:class archimate:Concept ] ]
+        [
+            sh:and (
+                [ sh:property [
+                    sh:path archimate:identifier ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1 ;
+                    sh:datatype xsd:string ;
+                    sh:pattern "^[a-zA-Z_][a-zA-Z0-9_-]*$" ;
+                    sh:message "All realized concepts must have exactly one valid identifier"
+                ] ]
+                [ sh:property [
+                    sh:path archimate:name ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1 ;
+                    sh:datatype xsd:string ;
+                    sh:message "All realized concepts must have exactly one name"
+                ] ]
+                [ sh:property [
+                    sh:path archimate:documentation ;
+                    sh:maxCount 1 ;
+                    sh:datatype xsd:string ;
+                    sh:message "All realized concepts must have at most one documentation value"
+                ] ]
+            )
+        ]
+    ) .
+
+# Unique identifier constraint across all concepts
+<#UniqueConceptIdentifier> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Concept ;
+    rdfs:label "Unique Concept Identifier Constraint" ;
+    rdfs:comment "Ensures each concept identifier is unique across the model." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Concept identifiers must be unique across the model" ;
+        sh:select """
+            SELECT $this ?other WHERE {
+                $this archimate:identifier ?id .
+                ?other archimate:identifier ?id .
+                FILTER($this != ?other)
+            }
+        """
+    ] .
+
+
+
+### 2. Specialization Relationship Validation
+# Specialization is purely a relationship (spec Section 5.4), not a concept property.
+# It connects two elements/concepts of the same type (e.g., specialized process → generic process).
+
+# Specialization must connect same-type elements
+<#SpecializationSameType> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Concept ;
+    rdfs:label "Specialization Same-Type Constraint" ;
+    rdfs:comment "Ensures specialization relationships connect elements of the same concrete ArchiMate type." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Specialization relationship must connect elements of the same type (e.g., BusinessProcess can only specialize BusinessProcess)" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:specialization ?target .
+
+                # Get the ArchiMate types of source and target
+                $this rdf:type ?sourceType .
+                ?target rdf:type ?targetType .
+
+                # Only check concrete ArchiMate element types
+                ?sourceType rdfs:subClassOf+ archimate:Element .
+                ?targetType rdfs:subClassOf+ archimate:Element .
+
+                # Source and target must share at least one common ArchiMate type
+                FILTER NOT EXISTS {
+                    $this rdf:type ?commonType .
+                    ?target rdf:type ?commonType .
+                    ?commonType rdfs:subClassOf+ archimate:Element .
+                }
+            }
+        """
+    ] .
+
+# No self-specialization
+<#NoSelfSpecialization> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Concept ;
+    rdfs:label "No Self-Specialization" ;
+    rdfs:comment "Prevents an element from specializing itself." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "An element cannot specialize itself" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:specialization $this
+            }
+        """
+    ] .
+
+# Check for overly deep specialization chains
+<#DeepSpecializationCheck> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Concept ;
+    rdfs:label "Deep Specialization Chain Check" ;
+    rdfs:comment "Flags elements involved in specialization chains 5 or more levels deep (informational)." ;
+    sh:severity sh:Info ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Element has a deep specialization chain (5+ levels) - consider if this complexity is necessary" ;
+        sh:select """
+            SELECT $this WHERE {
+                # Check specialization depth via transitive property
+                # 4 chained steps with + = minimum 4 hops
+                $this archimate:specialization+ ?type1 .
+                ?type1 archimate:specialization+ ?type2 .
+                ?type2 archimate:specialization+ ?type3 .
+                ?type3 archimate:specialization+ ?type4 .
+            }
+        """
+    ] .
+
+
+
+### 3. Structural Relationship Validation
+
+## 3.1 Composition Relationships
+
+# No self-composition
+<#NoSelfComposition> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Element ;
+    rdfs:label "No Self-Composition" ;
+    rdfs:comment "Prevents an element from composing itself." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Elements cannot compose themselves" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:composition $this
+            }
+        """
+    ] .
+
+# No circular composition
+<#NoCircularComposition> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Element ;
+    rdfs:label "No Circular Composition" ;
+    rdfs:comment "Prevents circular composition chains (A composes B, B composes C, C composes A)." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Circular composition relationships are not allowed (A composes B, B composes C, C composes A)" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:composition+ $this
+            }
+        """
+    ] .
+
+# Composition part uniqueness: a part can only belong to one whole
+<#CompositionPartUniqueness> rdf:type sh:NodeShape ;
+    sh:targetObjectsOf archimate:composition ;
+    rdfs:label "Composition Part Uniqueness" ;
+    rdfs:comment "Enforces that each composed part belongs to exactly one whole (exclusive ownership)." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "A composed part can only belong to one whole (composition implies exclusive ownership)" ;
+        sh:select """
+            SELECT $this WHERE {
+                ?whole1 archimate:composition $this .
+                ?whole2 archimate:composition $this .
+                FILTER(?whole1 != ?whole2)
+            }
+        """
+    ] .
+
+
+## 3.2 Aggregation Relationships
+
+# No self-aggregation
+<#NoSelfAggregation> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Element ;
+    rdfs:label "No Self-Aggregation" ;
+    rdfs:comment "Prevents an element from aggregating itself." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Elements cannot aggregate themselves" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:aggregation $this
+            }
+        """
+    ] .
+
+# No circular aggregation
+<#NoCircularAggregation> rdf:type sh:NodeShape ;
+    sh:targetClass archimate:Element ;
+    rdfs:label "No Circular Aggregation" ;
+    rdfs:comment "Prevents circular aggregation chains." ;
+    sh:sparql [
+        sh:prefixes <#> ;
+        sh:message "Circular aggregation relationships are not allowed" ;
+        sh:select """
+            SELECT $this WHERE {
+                $this archimate:aggregation+ $this
+            }
+        """
+    ] .
+
+
+

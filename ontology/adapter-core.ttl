@@ -1,0 +1,8 @@
+@prefix amx: <https://example.org/adapter#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+amx:RelationshipInstance a owl:Class .
+
+amx:source a owl:ObjectProperty .
+amx:target a owl:ObjectProperty .
+amx:relationshipType a owl:ObjectProperty .

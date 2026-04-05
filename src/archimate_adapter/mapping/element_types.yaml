@@ -1,0 +1,91 @@
+xml_to_rdf:
+  ApplicationCollaboration:
+    rdf_class: "https://purl.org/archimate#ApplicationCollaboration"
+  ApplicationComponent:
+    rdf_class: "https://purl.org/archimate#ApplicationComponent"
+  ApplicationEvent:
+    rdf_class: "https://purl.org/archimate#ApplicationEvent"
+  ApplicationFunction:
+    rdf_class: "https://purl.org/archimate#ApplicationFunction"
+  ApplicationInteraction:
+    rdf_class: "https://purl.org/archimate#ApplicationInteraction"
+  ApplicationInterface:
+    rdf_class: "https://purl.org/archimate#ApplicationInterface"
+  ApplicationProcess:
+    rdf_class: "https://purl.org/archimate#ApplicationProcess"
+  ApplicationService:
+    rdf_class: "https://purl.org/archimate#ApplicationService"
+  BusinessActor:
+    rdf_class: "https://purl.org/archimate#BusinessActor"
+  BusinessCollaboration:
+    rdf_class: "https://purl.org/archimate#BusinessCollaboration"
+  BusinessContract:
+    rdf_class: "https://purl.org/archimate#BusinessContract"
+  BusinessEvent:
+    rdf_class: "https://purl.org/archimate#BusinessEvent"
+  BusinessFunction:
+    rdf_class: "https://purl.org/archimate#BusinessFunction"
+  BusinessInteraction:
+    rdf_class: "https://purl.org/archimate#BusinessInteraction"
+  BusinessInterface:
+    rdf_class: "https://purl.org/archimate#BusinessInterface"
+  BusinessObject:
+    rdf_class: "https://purl.org/archimate#BusinessObject"
+  BusinessProcess:
+    rdf_class: "https://purl.org/archimate#BusinessProcess"
+  BusinessRole:
+    rdf_class: "https://purl.org/archimate#BusinessRole"
+  BusinessService:
+    rdf_class: "https://purl.org/archimate#BusinessService"
+  DataObject:
+    rdf_class: "https://purl.org/archimate#DataObject"
+  Product:
+    rdf_class: "https://purl.org/archimate#Product"
+  Representation:
+    rdf_class: "https://purl.org/archimate#Representation"
+
+rdf_to_xml:
+  "https://purl.org/archimate#ApplicationCollaboration":
+    xml_type: "ApplicationCollaboration"
+  "https://purl.org/archimate#ApplicationComponent":
+    xml_type: "ApplicationComponent"
+  "https://purl.org/archimate#ApplicationEvent":
+    xml_type: "ApplicationEvent"
+  "https://purl.org/archimate#ApplicationFunction":
+    xml_type: "ApplicationFunction"
+  "https://purl.org/archimate#ApplicationInteraction":
+    xml_type: "ApplicationInteraction"
+  "https://purl.org/archimate#ApplicationInterface":
+    xml_type: "ApplicationInterface"
+  "https://purl.org/archimate#ApplicationProcess":
+    xml_type: "ApplicationProcess"
+  "https://purl.org/archimate#ApplicationService":
+    xml_type: "ApplicationService"
+  "https://purl.org/archimate#BusinessActor":
+    xml_type: "BusinessActor"
+  "https://purl.org/archimate#BusinessCollaboration":
+    xml_type: "BusinessCollaboration"
+  "https://purl.org/archimate#BusinessContract":
+    xml_type: "BusinessContract"
+  "https://purl.org/archimate#BusinessEvent":
+    xml_type: "BusinessEvent"
+  "https://purl.org/archimate#BusinessFunction":
+    xml_type: "BusinessFunction"
+  "https://purl.org/archimate#BusinessInteraction":
+    xml_type: "BusinessInteraction"
+  "https://purl.org/archimate#BusinessInterface":
+    xml_type: "BusinessInterface"
+  "https://purl.org/archimate#BusinessObject":
+    xml_type: "BusinessObject"
+  "https://purl.org/archimate#BusinessProcess":
+    xml_type: "BusinessProcess"
+  "https://purl.org/archimate#BusinessRole":
+    xml_type: "BusinessRole"
+  "https://purl.org/archimate#BusinessService":
+    xml_type: "BusinessService"
+  "https://purl.org/archimate#DataObject":
+    xml_type: "DataObject"
+  "https://purl.org/archimate#Product":
+    xml_type: "Product"
+  "https://purl.org/archimate#Representation":
+    xml_type: "Representation"

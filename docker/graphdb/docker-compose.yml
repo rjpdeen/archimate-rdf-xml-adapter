@@ -1,0 +1,28 @@
+﻿services:
+  graphdb:
+    image: ontotext/graphdb:11.3.0
+    container_name: graphdb
+    ports:
+      - "7200:7200"
+    volumes:
+      - ./home:/opt/graphdb/home
+      - ../../ontology/imports/mendoza:/opt/graphdb/import/mendoza:ro
+      - ./init:/init:ro
+      - ./init/GRAPHDB_FREE_v11.3.license:/opt/graphdb/home/work/graphdb.license:ro
+    environment:
+      GDB_JAVA_OPTS: "-Xms1g -Xmx2g"
+    restart: unless-stopped
+
+  graphdb-init:
+    image: curlimages/curl:8.7.1
+    container_name: graphdb-init
+    depends_on:
+      - graphdb
+    volumes:
+      - ./init:/init:ro
+    environment:
+      GRAPHDB_URL: http://graphdb:7200
+      GRAPHDB_REPO_ID: archimate_phase1
+      IMPORT_FILE: /init/archimate.ttl
+    entrypoint: ["/bin/sh", "/init/init-graphdb.sh"]
+    restart: "no"

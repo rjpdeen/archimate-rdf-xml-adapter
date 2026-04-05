@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0">
+  <name xml:lang="en">Demo model</name>
+  <documentation xml:lang="en">Minimal model</documentation>
+
+  <elements>
+    <element identifier="app-1" xsi:type="ApplicationComponent">
+      <name xml:lang="en">My App</name>
+      <documentation xml:lang="en">Application component.</documentation>
+    </element>
+    <element identifier="actor-1" xsi:type="BusinessActor">
+      <name xml:lang="en">Customer</name>
+      <documentation xml:lang="en">Business actor.</documentation>
+    </element>
+  </elements>
+
+  <relationships>
+    <relationship identifier="rel-1"
+                  xsi:type="Serving"
+                  source="app-1"
+                  target="actor-1">
+      <name xml:lang="en">serves</name>
+      <documentation xml:lang="en">Application serves actor in this model.</documentation>
+    </relationship>
+  </relationships>
+</model>

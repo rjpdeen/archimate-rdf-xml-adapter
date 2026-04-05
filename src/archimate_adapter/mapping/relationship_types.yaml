@@ -1,0 +1,69 @@
+xml_to_rdf:
+  Access:
+    rdf_predicate: "https://purl.org/archimate#access"
+    exchange_type: "Access"
+  Aggregation:
+    rdf_predicate: "https://purl.org/archimate#aggregation"
+    exchange_type: "Aggregation"
+  Assignment:
+    rdf_predicate: "https://purl.org/archimate#assignment"
+    exchange_type: "Assignment"
+  Association:
+    rdf_predicate: "https://purl.org/archimate#association"
+    exchange_type: "Association"
+  Composition:
+    rdf_predicate: "https://purl.org/archimate#composition"
+    exchange_type: "Composition"
+  Flow:
+    rdf_predicate: "https://purl.org/archimate#flow"
+    exchange_type: "Flow"
+  Influence:
+    rdf_predicate: "https://purl.org/archimate#influence"
+    exchange_type: "Influence"
+  Realization:
+    rdf_predicate: "https://purl.org/archimate#realization"
+    exchange_type: "Realization"
+  Serving:
+    rdf_predicate: "https://purl.org/archimate#serving"
+    exchange_type: "Serving"
+  Specialization:
+    rdf_predicate: "https://purl.org/archimate#specialization"
+    exchange_type: "Specialization"
+  Triggering:
+    rdf_predicate: "https://purl.org/archimate#triggering"
+    exchange_type: "Triggering"
+
+rdf_to_xml:
+  "https://purl.org/archimate#access":
+    xml_type: "Access"
+    exchange_type: "Access"
+  "https://purl.org/archimate#aggregation":
+    xml_type: "Aggregation"
+    exchange_type: "Aggregation"
+  "https://purl.org/archimate#assignment":
+    xml_type: "Assignment"
+    exchange_type: "Assignment"
+  "https://purl.org/archimate#association":
+    xml_type: "Association"
+    exchange_type: "Association"
+  "https://purl.org/archimate#composition":
+    xml_type: "Composition"
+    exchange_type: "Composition"
+  "https://purl.org/archimate#flow":
+    xml_type: "Flow"
+    exchange_type: "Flow"
+  "https://purl.org/archimate#influence":
+    xml_type: "Influence"
+    exchange_type: "Influence"
+  "https://purl.org/archimate#realization":
+    xml_type: "Realization"
+    exchange_type: "Realization"
+  "https://purl.org/archimate#serving":
+    xml_type: "Serving"
+    exchange_type: "Serving"
+  "https://purl.org/archimate#specialization":
+    xml_type: "Specialization"
+    exchange_type: "Specialization"
+  "https://purl.org/archimate#triggering":
+    xml_type: "Triggering"
+    exchange_type: "Triggering"

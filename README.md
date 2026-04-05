@@ -130,40 +130,57 @@ The `assert_canonical_graph_integrity.py` service checks, among other things:
 ## Repository structure
 
 ```text
-src/
-  archimate_adapter/
-    dto/
-      model.py
-    graphdb/
-      client.py
-      export_queries.py
-    mapping/
-      element_types.yaml
-      relationship_types.yaml
-      registry.py
-    services/
-      assert_canonical_graph_integrity.py
-      export_canonical_rdf_to_xml.py
-      import_xml_to_canonical_rdf.py
-      rdf_to_xml.py
-      xml_to_rdf.py
-    xml/
-      parser.py
-      writer.py
-
-tests/
-  fixtures/
-    xml/
-      ...
-  test_*.py
-
-docker/
-  graphdb/
-    docker-compose.yml
-    ...
-
-README.md
+archimate-rdf-xml-adapter/
+├─ src/
+│  └─ archimate_adapter/
+│     ├─ dto/
+│     │  └─ model.py
+│     ├─ graphdb/
+│     │  ├─ client.py
+│     │  └─ export_queries.py
+│     ├─ mapping/
+│     │  ├─ element_types.yaml
+│     │  ├─ relationship_types.yaml
+│     │  ├─ iri_registry.py
+│     │  └─ registry.py
+│     ├─ services/
+│     │  ├─ assert_canonical_graph_integrity.py
+│     │  ├─ export_canonical_rdf_to_xml.py
+│     │  ├─ import_xml_to_canonical_rdf.py
+│     │  ├─ rdf_to_xml.py
+│     │  └─ xml_to_rdf.py
+│     ├─ xml/
+│     │  ├─ parser.py
+│     │  └─ writer.py
+│     ├─ config.py
+│     └─ namespaces.py
+├─ tests/
+│  ├─ fixtures/
+│  │  └─ xml/
+│  └─ test_*.py
+├─ examples/
+│  └─ xml/
+├─ tools/
+│  ├─ export_graphdb_to_xml.py
+│  └─ import_xml_to_graphdb.py
+├─ docker/
+│  └─ graphdb/
+│     ├─ docker-compose.yml
+│     └─ init/
+│        └─ init-graphdb.sh
+├─ ontology/
+├─ out/
+├─ .gitignore
+├─ pyproject.toml
+└─ README.md
 ```
+
+## Working directories
+
+- `tests/fixtures/xml/` contains XML fixtures used by automated tests.
+- `examples/xml/` is intended for committed example XML files.
+- `out/` is the local working directory for XML files you want to import or export during manual runs.
+- `docker/graphdb/home/` is GraphDB runtime state and should not be committed to Git.
 
 ## Requirements
 
@@ -171,6 +188,18 @@ README.md
 - Docker Desktop
 - GraphDB
 - pytest
+
+## Installation
+
+Create a virtual environment and install the package in editable mode:
+
+### Windows PowerShell
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e .
+```
 
 ## Starting GraphDB
 
@@ -195,22 +224,39 @@ http://localhost:7200
 
 ## GraphDB repository
 
-The tests assume a GraphDB repository with id:
+The setup assumes a GraphDB repository with id:
 
 ```text
 archimate_phase1
 ```
 
-Make sure this repository exists before running the integration tests.
+The `graphdb-init` container creates this repository automatically when you start the Docker setup.
 
 ## Loading the ontology/base
 
 The default graph must contain the ontology/base. The model data must live in a named graph.
 
-Use your existing GraphDB setup and loading steps for:
+Use your GraphDB setup and loading steps for:
 
 - the Mendoza ontology
+- any minimal base data needed for your current phase
 
+## Configuration defaults
+
+Project-level Python defaults are centralized in:
+
+```text
+src/archimate_adapter/config.py
+```
+
+This file contains the defaults used by the helper scripts, such as:
+
+- GraphDB base URL
+- repository id
+- named graph IRI
+- mapping file paths
+- default import XML path
+- default export XML path
 
 ## How to use this repository
 
@@ -218,7 +264,7 @@ A typical usage flow is:
 
 1. start GraphDB
 2. make sure the repository `archimate_phase1` exists
-3. load the Mendoza ontology and minimal base data into the **default graph**
+3. load the Mendoza ontology and base data into the **default graph**
 4. choose a **named graph** for your model instance data
 5. import an ArchiMate Exchange XML file into canonical RDF
 6. inspect or validate the canonical RDF in GraphDB
@@ -234,15 +280,31 @@ cd docker/graphdb
 docker compose up -d
 ```
 
-### 2. Prepare GraphDB
+### 2. Import XML into canonical RDF using the helper script
 
-Make sure:
+Place the XML file you want to import in `out/`, for example:
 
-- GraphDB is reachable
-- repository `archimate_phase1` exists
-- the Mendoza ontology is loaded in the default graph
+```text
+out/phase1_supported_types.xml
+```
 
-### 3. Import XML into canonical RDF
+Then run:
+
+```powershell
+py tools/import_xml_to_graphdb.py
+```
+
+### 3. Export canonical RDF back to XML using the helper script
+
+```powershell
+py tools/export_graphdb_to_xml.py
+```
+
+The exported XML is written to the path configured in `config.py`.
+
+## Example direct service usage
+
+### Import XML into canonical RDF
 
 ```python
 from archimate_adapter.services.import_xml_to_canonical_rdf import (
@@ -260,14 +322,7 @@ service = ImportXmlToCanonicalRdfService(
 service.import_from_file("tests/fixtures/xml/phase1_supported_types.xml")
 ```
 
-What this does:
-
-- parses the ArchiMate Exchange XML file
-- maps XML element and relationship types using the YAML mapping files
-- writes canonical RDF into the selected named graph in GraphDB
-- stores relationship metadata using RDF-star on quoted triples
-
-### 4. Export canonical RDF back to XML
+### Export canonical RDF back to XML
 
 ```python
 from archimate_adapter.services.export_canonical_rdf_to_xml import (
@@ -282,14 +337,8 @@ service = ExportCanonicalRdfToXmlService(
     graph_iri="https://example.org/graph/model",
 )
 
-service.export_to_file("out.xml")
+service.export_to_file("out/exported-from-graphdb.xml")
 ```
-
-What this does:
-
-- reads canonical RDF for the selected named graph
-- translates RDF classes and predicates back to ArchiMate Exchange XML types
-- writes an Exchange XML file for roundtrip verification
 
 ## How the adapter works
 
@@ -302,7 +351,7 @@ What this does:
 
 ### RDF to XML
 
-- an export query reads element and relationship data from the named graph
+- export queries read element and relationship data from the named graph
 - the mapping determines the translation back to Exchange XML `xsi:type`
 - the writer outputs an ArchiMate Exchange XML file
 
@@ -387,13 +436,13 @@ To commit and push to GitHub:
 ```powershell
 git status
 git add .
-git commit -m "Complete phase 1 business and application layer support"
-git push
+git commit -m "Initial commit"
+git push -u origin main
 ```
 
 ## Status
 
-The Phase 1 prototype adapter now supports a broad Business and Application subset with roundtrip through GraphDB and RDF-star relationship metadata.
+The Phase 1 prototype adapter supports a broad Business and Application subset with roundtrip through GraphDB and RDF-star relationship metadata.
 
 The next logical step after Phase 1 is extension toward:
 

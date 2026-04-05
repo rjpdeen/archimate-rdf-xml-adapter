@@ -5,5 +5,7 @@ __pycache__/
 dist/
 *.egg-info/
 out/
+
 docker/graphdb/home/
 docker/graphdb/init/GRAPHDB_FREE_v11.3.license
+

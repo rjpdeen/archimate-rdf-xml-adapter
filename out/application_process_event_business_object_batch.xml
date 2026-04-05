@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Claim Handling Application Process Model</name>
+  <elements>
+    <element identifier="appcomp-1" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Claims Application</name>
+      <documentation xml:lang="en">Application component that executes claim handling behavior.</documentation>
+    </element>
+    <element identifier="appproc-1" xsi:type="ApplicationProcess">
+      <name xml:lang="en">Register Claim</name>
+      <documentation xml:lang="en">Application process for registering incoming claims.</documentation>
+    </element>
+    <element identifier="appevt-1" xsi:type="ApplicationEvent">
+      <name xml:lang="en">Claim Received</name>
+      <documentation xml:lang="en">Application event raised when a claim is received.</documentation>
+    </element>
+    <element identifier="appsvc-1" xsi:type="ApplicationService">
+      <name xml:lang="en">Claim Registration Service</name>
+      <documentation xml:lang="en">Application service for claim registration.</documentation>
+    </element>
+    <element identifier="dataobj-1" xsi:type="DataObject">
+      <name xml:lang="en">Claim Record</name>
+      <documentation xml:lang="en">Application data object containing the registered claim.</documentation>
+    </element>
+    <element identifier="busobj-1" xsi:type="BusinessObject">
+      <name xml:lang="en">Claim</name>
+      <documentation xml:lang="en">Business object representing a claim.</documentation>
+    </element>
+    <element identifier="busproc-1" xsi:type="BusinessProcess">
+      <name xml:lang="en">Handle Claim</name>
+      <documentation xml:lang="en">Business process for handling a customer claim.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-10"
+                  source="appcomp-1"
+                  target="appproc-1"
+                  xsi:type="Assignment">
+      <name xml:lang="en">performs</name>
+      <documentation xml:lang="en">Application component is assigned to the application process.</documentation>
+    </relationship>
+    <relationship identifier="rel-11"
+                  source="appproc-1"
+                  target="appsvc-1"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Application process realizes application service.</documentation>
+    </relationship>
+    <relationship identifier="rel-12"
+                  source="appevt-1"
+                  target="appproc-1"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">Application event triggers application process.</documentation>
+    </relationship>
+    <relationship identifier="rel-13"
+                  source="appproc-1"
+                  target="dataobj-1"
+                  xsi:type="Access">
+      <name xml:lang="en">uses</name>
+      <documentation xml:lang="en">Application process accesses claim record data.</documentation>
+    </relationship>
+    <relationship identifier="rel-14"
+                  source="dataobj-1"
+                  target="busobj-1"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Data object realizes business object.</documentation>
+    </relationship>
+    <relationship identifier="rel-15"
+                  source="appsvc-1"
+                  target="busproc-1"
+                  xsi:type="Serving">
+      <name xml:lang="en">serves</name>
+      <documentation xml:lang="en">Application service serves business process.</documentation>
+    </relationship>
+  </relationships>
+</model>

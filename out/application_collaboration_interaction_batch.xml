@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Multi-System Claim Coordination Model</name>
+  <elements>
+    <element identifier="appcomp-2" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Claims Intake Application</name>
+      <documentation xml:lang="en">Application component for receiving incoming claims.</documentation>
+    </element>
+    <element identifier="appcomp-3" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Claims Validation Application</name>
+      <documentation xml:lang="en">Application component for validating claim details.</documentation>
+    </element>
+    <element identifier="appcollab-1" xsi:type="ApplicationCollaboration">
+      <name xml:lang="en">Claims Coordination Collaboration</name>
+      <documentation xml:lang="en">Application collaboration of components coordinating claim handling.</documentation>
+    </element>
+    <element identifier="appint-1" xsi:type="ApplicationInteraction">
+      <name xml:lang="en">Coordinate Claim Handling</name>
+      <documentation xml:lang="en">Application interaction for coordinated claim handling.</documentation>
+    </element>
+    <element identifier="appevt-2" xsi:type="ApplicationEvent">
+      <name xml:lang="en">Claim Validation Requested</name>
+      <documentation xml:lang="en">Application event raised when claim validation is requested.</documentation>
+    </element>
+    <element identifier="appsvc-2" xsi:type="ApplicationService">
+      <name xml:lang="en">Claim Coordination Service</name>
+      <documentation xml:lang="en">Application service for coordinating claim handling.</documentation>
+    </element>
+    <element identifier="dataobj-2" xsi:type="DataObject">
+      <name xml:lang="en">Validation Record</name>
+      <documentation xml:lang="en">Data object containing validation information.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-16"
+              source="appcollab-1"
+              target="appcomp-2"
+              xsi:type="Aggregation">
+      <name xml:lang="en">participates in</name>
+      <documentation xml:lang="en">Application component is aggregated into application collaboration.</documentation>
+    </relationship>
+    <relationship identifier="rel-17"
+              source="appcollab-1"
+              target="appcomp-3"
+              xsi:type="Aggregation">
+      <name xml:lang="en">participates in</name>
+      <documentation xml:lang="en">Application component is aggregated into application collaboration.</documentation>
+    </relationship>
+    <relationship identifier="rel-18"
+                  source="appcollab-1"
+                  target="appint-1"
+                  xsi:type="Assignment">
+      <name xml:lang="en">performs</name>
+      <documentation xml:lang="en">Application collaboration is assigned to application interaction.</documentation>
+    </relationship>
+    <relationship identifier="rel-19"
+                  source="appint-1"
+                  target="appsvc-2"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Application interaction realizes application service.</documentation>
+    </relationship>
+    <relationship identifier="rel-20"
+                  source="appint-1"
+                  target="dataobj-2"
+                  xsi:type="Access">
+      <name xml:lang="en">uses</name>
+      <documentation xml:lang="en">Application interaction accesses validation data.</documentation>
+    </relationship>
+    <relationship identifier="rel-21"
+                  source="appevt-2"
+                  target="appint-1"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">Application event triggers application interaction.</documentation>
+    </relationship>
+  </relationships>
+</model>

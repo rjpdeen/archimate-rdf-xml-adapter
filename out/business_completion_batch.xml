@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Business Completion Batch Model</name>
+  <elements>
+    <element identifier="role-3" xsi:type="BusinessRole">
+      <name xml:lang="en">Case Service Coordinator</name>
+      <documentation xml:lang="en">Business role coordinating case services.</documentation>
+    </element>
+    <element identifier="role-4" xsi:type="BusinessRole">
+      <name xml:lang="en">Service Staff</name>
+      <documentation xml:lang="en">General business role for service staff.</documentation>
+    </element>
+    <element identifier="busif-1" xsi:type="BusinessInterface">
+      <name xml:lang="en">Case Service Desk</name>
+      <documentation xml:lang="en">Business interface exposing case support.</documentation>
+    </element>
+    <element identifier="bussvc-3" xsi:type="BusinessService">
+      <name xml:lang="en">Case Support Service</name>
+      <documentation xml:lang="en">Business service for case support.</documentation>
+    </element>
+    <element identifier="contract-1" xsi:type="BusinessContract">
+      <name xml:lang="en">Case Support Agreement</name>
+      <documentation xml:lang="en">Business contract governing case support.</documentation>
+    </element>
+    <element identifier="product-1" xsi:type="Product">
+      <name xml:lang="en">Case Support Offering</name>
+      <documentation xml:lang="en">Product offering for coordinated case support.</documentation>
+    </element>
+    <element identifier="representation-1" xsi:type="Representation">
+      <name xml:lang="en">Case Summary Document</name>
+      <documentation xml:lang="en">Representation of case information for staff.</documentation>
+    </element>
+    <element identifier="busobj-3" xsi:type="BusinessObject">
+      <name xml:lang="en">Case File</name>
+      <documentation xml:lang="en">Business object containing the case file.</documentation>
+    </element>
+    <element identifier="busproc-2" xsi:type="BusinessProcess">
+      <name xml:lang="en">Review Case</name>
+      <documentation xml:lang="en">Business process for reviewing a case.</documentation>
+    </element>
+    <element identifier="busproc-3" xsi:type="BusinessProcess">
+      <name xml:lang="en">Resolve Case</name>
+      <documentation xml:lang="en">Business process for resolving a case.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-28"
+                  source="role-3"
+                  target="busif-1"
+                  xsi:type="Composition">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Business role is composed of business interface.</documentation>
+    </relationship>
+    <relationship identifier="rel-29"
+                  source="busif-1"
+                  target="bussvc-3"
+                  xsi:type="Serving">
+      <name xml:lang="en">serves</name>
+      <documentation xml:lang="en">Business interface serves business service.</documentation>
+    </relationship>
+    <relationship identifier="rel-30"
+                  source="bussvc-3"
+                  target="contract-1"
+                  xsi:type="Association">
+      <name xml:lang="en">is governed by</name>
+      <documentation xml:lang="en">Business service is associated with business contract.</documentation>
+    </relationship>
+    <relationship identifier="rel-31"
+                  source="product-1"
+                  target="bussvc-3"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Product aggregates business service.</documentation>
+    </relationship>
+    <relationship identifier="rel-32"
+                  source="product-1"
+                  target="contract-1"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Product aggregates business contract.</documentation>
+    </relationship>
+    <relationship identifier="rel-33"
+                  source="representation-1"
+                  target="busobj-3"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Representation realizes business object.</documentation>
+    </relationship>
+    <relationship identifier="rel-34"
+                  source="busproc-2"
+                  target="representation-1"
+                  xsi:type="Access">
+      <name xml:lang="en">uses</name>
+      <documentation xml:lang="en">Business process accesses representation.</documentation>
+    </relationship>
+    <relationship identifier="rel-35"
+                  source="busproc-2"
+                  target="busproc-3"
+                  xsi:type="Flow">
+      <name xml:lang="en">flows to</name>
+      <documentation xml:lang="en">Business process flows into following business process.</documentation>
+    </relationship>
+    <relationship identifier="rel-36"
+                  source="busproc-2"
+                  target="busproc-3"
+                  xsi:type="Influence">
+      <name xml:lang="en">influences</name>
+      <documentation xml:lang="en">Business process influences following business process.</documentation>
+    </relationship>
+    <relationship identifier="rel-37"
+                  source="role-3"
+                  target="role-4"
+                  xsi:type="Specialization">
+      <name xml:lang="en">specializes</name>
+      <documentation xml:lang="en">Business role specializes more general business role.</documentation>
+    </relationship>
+  </relationships>
+</model>

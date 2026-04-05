@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Business Role Assignment Model</name>
+  <elements>
+    <element identifier="role-1" xsi:type="BusinessRole">
+      <name xml:lang="en">Case Handler</name>
+      <documentation xml:lang="en">Business role for handling cases.</documentation>
+    </element>
+    <element identifier="process-1" xsi:type="BusinessProcess">
+      <name xml:lang="en">Handle Application</name>
+      <documentation xml:lang="en">Business process for handling an application.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-7"
+                  source="role-1"
+                  target="process-1"
+                  xsi:type="Assignment">
+      <name xml:lang="en">is responsible for</name>
+      <documentation xml:lang="en">Business role is assigned to business process.</documentation>
+    </relationship>
+  </relationships>
+</model>

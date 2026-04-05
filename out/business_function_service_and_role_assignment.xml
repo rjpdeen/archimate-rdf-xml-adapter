@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Business Function Service and Role Assignment Model</name>
+  <elements>
+    <element identifier="role-1" xsi:type="BusinessRole">
+      <name xml:lang="en">Case Handler</name>
+      <documentation xml:lang="en">Business role for handling cases.</documentation>
+    </element>
+    <element identifier="busfn-1" xsi:type="BusinessFunction">
+      <name xml:lang="en">Handle Requests</name>
+      <documentation xml:lang="en">Business function for handling requests.</documentation>
+    </element>
+    <element identifier="bussvc-1" xsi:type="BusinessService">
+      <name xml:lang="en">Request Handling Service</name>
+      <documentation xml:lang="en">Business service for request handling.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-8"
+                  source="busfn-1"
+                  target="bussvc-1"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Business function realizes business service.</documentation>
+    </relationship>
+    <relationship identifier="rel-9"
+                  source="role-1"
+                  target="busfn-1"
+                  xsi:type="Assignment">
+      <name xml:lang="en">is responsible for</name>
+      <documentation xml:lang="en">Business role is assigned to business function.</documentation>
+    </relationship>
+  </relationships>
+</model>

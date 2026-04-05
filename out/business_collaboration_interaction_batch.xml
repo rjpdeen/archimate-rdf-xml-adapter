@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       identifier="model-1"
+       version="1.0"
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Model.xsd">
+  <name xml:lang="en">Case Coordination Business Collaboration Model</name>
+  <elements>
+    <element identifier="buscollab-1" xsi:type="BusinessCollaboration">
+      <name xml:lang="en">Case Coordination Team</name>
+      <documentation xml:lang="en">Business collaboration coordinating case handling.</documentation>
+    </element>
+    <element identifier="role-2" xsi:type="BusinessRole">
+      <name xml:lang="en">Case Coordinator</name>
+      <documentation xml:lang="en">Business role responsible for coordinating case work.</documentation>
+    </element>
+    <element identifier="actor-2" xsi:type="BusinessActor">
+      <name xml:lang="en">Claims Office</name>
+      <documentation xml:lang="en">Business actor participating in case coordination.</documentation>
+    </element>
+    <element identifier="busint-1" xsi:type="BusinessInteraction">
+      <name xml:lang="en">Coordinate Case Handling</name>
+      <documentation xml:lang="en">Business interaction for coordinated case handling.</documentation>
+    </element>
+    <element identifier="busevt-1" xsi:type="BusinessEvent">
+      <name xml:lang="en">Case Review Requested</name>
+      <documentation xml:lang="en">Business event raised when case review is requested.</documentation>
+    </element>
+    <element identifier="bussvc-2" xsi:type="BusinessService">
+      <name xml:lang="en">Case Coordination Service</name>
+      <documentation xml:lang="en">Business service for coordinating case handling.</documentation>
+    </element>
+    <element identifier="busobj-2" xsi:type="BusinessObject">
+      <name xml:lang="en">Case File</name>
+      <documentation xml:lang="en">Business object containing the case file.</documentation>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="rel-22"
+                  source="buscollab-1"
+                  target="role-2"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Business collaboration aggregates business role.</documentation>
+    </relationship>
+    <relationship identifier="rel-23"
+                  source="buscollab-1"
+                  target="actor-2"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Business collaboration aggregates business actor.</documentation>
+    </relationship>
+    <relationship identifier="rel-24"
+                  source="buscollab-1"
+                  target="busint-1"
+                  xsi:type="Assignment">
+      <name xml:lang="en">performs</name>
+      <documentation xml:lang="en">Business collaboration is assigned to business interaction.</documentation>
+    </relationship>
+    <relationship identifier="rel-25"
+                  source="busint-1"
+                  target="bussvc-2"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Business interaction realizes business service.</documentation>
+    </relationship>
+    <relationship identifier="rel-26"
+                  source="busint-1"
+                  target="busobj-2"
+                  xsi:type="Access">
+      <name xml:lang="en">uses</name>
+      <documentation xml:lang="en">Business interaction accesses business object.</documentation>
+    </relationship>
+    <relationship identifier="rel-27"
+                  source="busevt-1"
+                  target="busint-1"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">Business event triggers business interaction.</documentation>
+    </relationship>
+  </relationships>
+</model>

@@ -197,7 +197,18 @@ archimate-rdf-xml-adapter/
 
 ## Quick start: GraphDB only
 
-If you only want to start GraphDB locally, Docker is sufficient:
+## GraphDB license
+
+This repository does **not** include a GraphDB license file.
+
+Starting with GraphDB 11, GraphDB Free requires a license file that you must request yourself. You can request a free GraphDB license on the Ontotext GraphDB download page. Ontotext will send the free license to your email address.
+
+After receiving your license file, place it here:
+
+```text
+docker/graphdb/init/GRAPHDB_FREE_v11.3.license
+
+After this, if you only want to use the adapter tools (no testing), Docker is sufficient:
 
 ```powershell
 cd docker/graphdb

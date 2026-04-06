@@ -47,7 +47,7 @@ class ElementTypeRegistry:
     Registry for mapping canonical RDF classes back to ArchiMate XML element types.
     """
 
-    class_to_xml_type: dict[str, str]
+    class_to_config: dict[str, dict[str, str]]
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> "ElementTypeRegistry":
@@ -55,7 +55,7 @@ class ElementTypeRegistry:
             data = yaml.safe_load(handle) or {}
 
         rdf_to_xml = data.get("rdf_to_xml", {})
-        mapping: dict[str, str] = {}
+        mapping: dict[str, dict[str, str]] = {}
 
         for class_iri, config in rdf_to_xml.items():
             xml_type = config.get("xml_type")
@@ -63,15 +63,24 @@ class ElementTypeRegistry:
                 raise ValueError(
                     f"Missing xml_type for class '{class_iri}' in {path}"
                 )
-            mapping[class_iri] = xml_type
+            mapping[class_iri] = config
 
-        return cls(class_to_xml_type=mapping)
+        return cls(class_to_config=mapping)
 
     def xml_type_for_class(self, class_iri: str) -> str:
         try:
-            return self.class_to_xml_type[class_iri]
+            return self.class_to_config[class_iri]["xml_type"]
         except KeyError as exc:
             raise KeyError(f"No XML type configured for RDF class: {class_iri}") from exc
+
+    def exchange_type_for_class(self, class_iri: str) -> str:
+        try:
+            config = self.class_to_config[class_iri]
+            return config.get("exchange_type", config["xml_type"])
+        except KeyError as exc:
+            raise KeyError(
+                f"No exchange type configured for RDF class: {class_iri}"
+            ) from exc
 
 
 def model_from_sparql_results(
@@ -130,8 +139,6 @@ def element_dto_from_row(
     rdf_type = _required_str(row, "type")
     identifier = _required_str(row, "id")
 
-    # We currently trust archimate:identifier as the canonical source for XML id.
-    # IRI decoding is still useful as a consistency check.
     decoded_identifier = identifier_from_iri(element_iri)
     if decoded_identifier != identifier:
         raise ValueError(
@@ -142,6 +149,7 @@ def element_dto_from_row(
     return ElementDTO(
         identifier=identifier,
         xml_type=element_registry.xml_type_for_class(rdf_type),
+        exchange_type=element_registry.exchange_type_for_class(rdf_type),
         name=_optional_str(row, "name"),
         documentation=_optional_str(row, "documentation"),
     )
@@ -178,12 +186,6 @@ def relationship_dto_from_row(
 
 
 def _synthetic_relationship_id(source_id: str, predicate_iri: str, target_id: str) -> str:
-    """
-    Fallback id for non-roundtrip scenarios.
-
-    In normal phase-1 roundtrip usage this should not be needed, because
-    relationship identifiers are expected on the RDF-star triple metadata.
-    """
     iri = predicate_iri.rstrip("/#")
     tail = iri.rsplit("#", 1)[-1].rsplit("/", 1)[-1]
     return f"{source_id}--{tail}--{target_id}"

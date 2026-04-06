@@ -87,9 +87,13 @@ This phase supports only the **Business** and **Application** scope of the adapt
 - BusinessEvent
 - BusinessService
 - BusinessObject
-- BusinessContract
+- Contract
 - Product
 - Representation
+
+```text
+Note: Deviation from Mendoza: Contract instead of Business Contract
+```
 
 ## Supported relationship types
 

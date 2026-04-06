@@ -558,7 +558,7 @@
     rdfs:subClassOf <#BusinessLayer> ;
     rdfs:subClassOf <#Element> .
 
-<#BusinessContract> rdf:type owl:Class ;
+<#Contract> rdf:type owl:Class ;
     rdfs:label "Business Contract" ;
     rdfs:comment "Represents a formal or informal specification of an agreement between a provider and a consumer that specifies the rights and obligations associated with a product and establishes functional and non-functional parameters for interaction." ;
     rdfs:subClassOf <#PassiveStructure> ;

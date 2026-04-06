@@ -119,7 +119,7 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "ApplicationService",
             "BusinessActor",
             "BusinessCollaboration",
-            "BusinessContract",
+            "Contract",
             "BusinessEvent",
             "BusinessFunction",
             "BusinessInteraction",
@@ -283,7 +283,7 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{role4_iri}> rdf:type archimate:BusinessRole .
                 <{busif_iri}> rdf:type archimate:BusinessInterface .
                 <{bussvc3_iri}> rdf:type archimate:BusinessService .
-                <{contract1_iri}> rdf:type archimate:BusinessContract .
+                <{contract1_iri}> rdf:type archimate:Contract .
                 <{product1_iri}> rdf:type archimate:Product .
                 <{representation1_iri}> rdf:type archimate:Representation .
                 <{busobj3_iri}> rdf:type archimate:BusinessObject .

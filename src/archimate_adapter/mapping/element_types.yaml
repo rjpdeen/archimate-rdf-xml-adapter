@@ -19,8 +19,8 @@ xml_to_rdf:
     rdf_class: "https://purl.org/archimate#BusinessActor"
   BusinessCollaboration:
     rdf_class: "https://purl.org/archimate#BusinessCollaboration"
-  BusinessContract:
-    rdf_class: "https://purl.org/archimate#BusinessContract"
+  Contract:
+    rdf_class: "https://purl.org/archimate#Contract"
   BusinessEvent:
     rdf_class: "https://purl.org/archimate#BusinessEvent"
   BusinessFunction:
@@ -65,8 +65,9 @@ rdf_to_xml:
     xml_type: "BusinessActor"
   "https://purl.org/archimate#BusinessCollaboration":
     xml_type: "BusinessCollaboration"
-  "https://purl.org/archimate#BusinessContract":
-    xml_type: "BusinessContract"
+  "https://purl.org/archimate#Contract":
+    xml_type: "Contract"
+    exchange_type: "Contract"
   "https://purl.org/archimate#BusinessEvent":
     xml_type: "BusinessEvent"
   "https://purl.org/archimate#BusinessFunction":

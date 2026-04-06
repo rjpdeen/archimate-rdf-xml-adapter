@@ -22,7 +22,7 @@
       <name xml:lang="en">Case Support Service</name>
       <documentation xml:lang="en">Business service for case support.</documentation>
     </element>
-    <element identifier="contract-1" xsi:type="BusinessContract">
+    <element identifier="contract-1" xsi:type="Contract">
       <name xml:lang="en">Case Support Agreement</name>
       <documentation xml:lang="en">Business contract governing case support.</documentation>
     </element>

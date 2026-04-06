@@ -25,7 +25,7 @@ SUPPORTED_ELEMENT_TYPES = {
     "ApplicationService",
     "BusinessActor",
     "BusinessCollaboration",
-    "BusinessContract",
+    "Contract",
     "BusinessEvent",
     "BusinessFunction",
     "BusinessInteraction",

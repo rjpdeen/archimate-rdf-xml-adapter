@@ -27,6 +27,15 @@ class ElementTypeRegistry:
         except KeyError as exc:
             raise KeyError(f"No XML type configured for RDF class: {rdf_class_iri}") from exc
 
+    def exchange_type_for_class(self, rdf_class_iri: str) -> str:
+        try:
+            config = self.rdf_to_xml_map[rdf_class_iri]
+            return config.get("exchange_type", config["xml_type"])
+        except KeyError as exc:
+            raise KeyError(
+                f"No exchange type configured for RDF class: {rdf_class_iri}"
+            ) from exc
+
     def rdf_class_for_xml_type(self, xml_type: str) -> str:
         try:
             return self.xml_to_rdf_map[xml_type]["rdf_class"]

@@ -43,7 +43,7 @@ def test_parse_model_with_business_completion_batch():
           <name xml:lang="en">Case Support Service</name>
           <documentation xml:lang="en">Business service for case support.</documentation>
         </element>
-        <element identifier="contract-1" xsi:type="BusinessContract">
+        <element identifier="contract-1" xsi:type="Contract">
           <name xml:lang="en">Case Support Agreement</name>
           <documentation xml:lang="en">Business contract governing case support.</documentation>
         </element>
@@ -153,7 +153,7 @@ def test_parse_model_with_business_completion_batch():
     assert business_interface.name == "Case Service Desk"
 
     business_contract = model.get_element("contract-1")
-    assert business_contract.xml_type == "BusinessContract"
+    assert business_contract.xml_type == "Contract"
     assert business_contract.name == "Case Support Agreement"
 
     representation = model.get_element("representation-1")
@@ -224,7 +224,7 @@ def test_build_canonical_import_sparql_with_business_completion_batch():
     model.add_element(
         ElementDTO(
             identifier="contract-1",
-            xml_type="BusinessContract",
+            xml_type="Contract",
             name="Case Support Agreement",
             documentation="Business contract governing case support.",
         )
@@ -380,7 +380,7 @@ def test_build_canonical_import_sparql_with_business_completion_batch():
     )
 
     assert "https://purl.org/archimate#BusinessInterface" in sparql
-    assert "https://purl.org/archimate#BusinessContract" in sparql
+    assert "https://purl.org/archimate#Contract" in sparql
     assert "https://purl.org/archimate#Representation" in sparql
     assert "https://purl.org/archimate#Product" in sparql
 
@@ -454,7 +454,7 @@ def test_import_from_file_inserts_business_completion_batch_into_named_graph() -
                 <{role4_iri}> rdf:type archimate:BusinessRole .
                 <{busif_iri}> rdf:type archimate:BusinessInterface .
                 <{bussvc3_iri}> rdf:type archimate:BusinessService .
-                <{contract1_iri}> rdf:type archimate:BusinessContract .
+                <{contract1_iri}> rdf:type archimate:Contract .
                 <{product1_iri}> rdf:type archimate:Product .
                 <{representation1_iri}> rdf:type archimate:Representation .
                 <{busobj3_iri}> rdf:type archimate:BusinessObject .
@@ -544,7 +544,7 @@ def test_export_canonical_rdf_to_xml_includes_business_completion_batch(
         xml_text = output_path.read_text(encoding="utf-8")
 
         assert 'xsi:type="BusinessInterface"' in xml_text
-        assert 'xsi:type="BusinessContract"' in xml_text
+        assert 'xsi:type="Contract"' in xml_text
         assert 'xsi:type="Representation"' in xml_text
         assert 'xsi:type="Product"' in xml_text
 

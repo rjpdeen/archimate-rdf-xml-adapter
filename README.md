@@ -18,13 +18,107 @@ The focus in **Phase 1** is on:
   - bendpoints
   - style / visual properties
 
-## Architecture choices
+## Quick start with GraphDB and tools
 
-### Canonical backend
+### 0. Grapdb licence
 
-The canonical store is **GraphDB**.
+This repository does **not** include a GraphDB license file.
 
-### Canonical RDF form
+Starting with GraphDB 11, GraphDB Free requires a license file that you must request yourself. You can request a free GraphDB license on the Ontotext GraphDB download page. Ontotext will send the free license to your email address. 
+
+After receiving your license file, place it here, with this exact name:
+
+```text
+docker/graphdb/init/GRAPHDB_FREE_v11.3.license
+```
+
+The Docker setup expects the license file at that path.
+
+### 1. Start GraphDB
+
+If you only want to start GraphDB locally, Docker is sufficient:
+
+```powershell
+cd docker/graphdb
+docker compose up -d
+```
+
+View logs (it may take a minute to set up GraphDB):
+
+```powershell
+docker compose logs -f graphdb
+```
+
+The GraphDB Workbench is normally available at:
+
+```text
+http://localhost:7200
+```
+
+When you open GraphDB portal, you should see a repo and a loaded base model (default graph).
+
+### 2. Import XML into canonical RDF
+
+```powershell
+py tools/import_xml_to_graphdb.py
+```
+
+This transforms the selected XML file into canonical RDF in GraphDB in a separate named model graph.
+
+### 3. Export canonical RDF back to XML
+You can make some changes in the imported model, before exporting it back to XML format.
+
+```powershell
+py tools/export_graphdb_to_xml.py
+```
+
+By default, the tools use settings from:
+
+```text
+src/archimate_adapter/config.py
+```
+
+
+## GraphDB repository and base model
+
+The tools and integration tests assume a GraphDB repository with id:
+
+```text
+archimate_phase1
+```
+
+This repository is created automatically by the Docker GraphDB init flow.
+
+No manual action is needed after cloning for the ontology/base initialization.
+
+When you start GraphDB with:
+
+```powershell
+cd docker/graphdb
+docker compose up -d
+```
+
+the init flow automatically creates the repository and loads `archimate.ttl` into the default graph as the base model.
+
+That base model is not deleted when you import an XML file. XML import writes the imported model to a separate named graph.
+
+## Choose the XML file to import
+
+The first manual action after cloning is choosing the ArchiMate Exchange XML file you want to import into GraphDB.
+
+By default, the import tool expects this file:
+
+```text
+out/phase1_supported_types.xml
+```
+
+So after cloning the repo, you can either:
+
+- use that default file which is present in `out/`
+- or place another XML file in `out/` and update the path in `src/archimate_adapter/config.py`
+
+
+## Canonical RDF form
 
 The canonical RDF form uses:
 
@@ -91,9 +185,7 @@ This phase supports only the **Business** and **Application** scope of the adapt
 - Product
 - Representation
 
-```text
-Note: Deviation from Mendoza: Contract instead of BusinessContract
-```
+Note: this project uses `Contract` consistently to align with the ArchiMate Exchange format. This is a deliberate deviation from upstream Mendoza naming on this point.
 
 ## Supported relationship types
 
@@ -173,7 +265,6 @@ archimate-rdf-xml-adapter/
 │     ├─ docker-compose.yml
 │     └─ init/
 │        ├─ archimate.ttl
-│        ├─ GRAPHDB_FREE_v11.3.license
 │        ├─ init-graphdb.sh
 │        ├─ minimal-mendoza-base.ttl
 │        ├─ minimal-phase1-model.ttls
@@ -181,6 +272,7 @@ archimate-rdf-xml-adapter/
 ├─ ontology/
 ├─ out/
 ├─ .gitignore
+├─ .gitattributes
 ├─ pyproject.toml
 └─ README.md
 ```
@@ -195,141 +287,10 @@ archimate-rdf-xml-adapter/
 ## Requirements
 
 - Python 3.14.x
-- Docker Desktop
+- Docker (Desktop)
 - GraphDB
 - pytest
 
-## Quick start: GraphDB only
-
-This repository does **not** include a GraphDB license file.
-
-Starting with GraphDB 11, GraphDB Free requires a license file that you must request yourself. You can request a free GraphDB license on the Ontotext GraphDB download page. Ontotext will send the free license to your email address.
-
-After receiving your license file, place it here:
-
-```text
-docker/graphdb/init/GRAPHDB_FREE_v11.3.license
-```
-
-After this, if you only want to use the adapter tools (no testing), Docker is sufficient:
-
-```powershell
-cd docker/graphdb
-docker compose up -d
-```
-
-View logs:
-
-```powershell
-docker compose logs -f graphdb
-```
-
-The GraphDB Workbench is normally available at:
-
-```text
-http://localhost:7200
-```
-
-## Python setup for tools and tests
-
-You only need this section if you want to:
-
-- run the Python import/export tools
-- run the automated tests
-- work on the adapter code itself
-
-If you only want to start GraphDB, the Docker step above is enough.
-
-Create a virtual environment and install the package in editable mode:
-
-### Windows PowerShell
-
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -e .
-```
-
-## GraphDB repository
-
-The tools and integration tests assume a GraphDB repository with id:
-
-```text
-archimate_phase1
-```
-
-This repository is created automatically by the Docker GraphDB init flow.
-
-## Loading the ontology/base
-
-No manual action is needed after cloning for the ontology/base initialization.
-
-When you start GraphDB with:
-
-```powershell
-cd docker/graphdb
-docker compose up -d
-```
-
-the init flow automatically creates the repository and loads `archimate.ttl` into the default graph as the base model.
-
-That base model is not deleted when you import an XML file. XML import writes the imported model to a separate named graph.
-
-The first manual action after cloning is therefore not ontology loading, but choosing the ArchiMate Exchange XML file you want to import into GraphDB.
-
-## Typical first run after cloning
-
-1. start GraphDB with Docker
-2. choose or copy the XML file you want to import into `out/`
-3. update the import path in `src/archimate_adapter/config.py` if needed
-4. run the import tool to transform XML into canonical RDF in GraphDB
-5. optionally run the export tool or tests
-
-By default, the import tool reads: out/phase1_supported_types.xml
-If you want to import a different XML file, update the default import path in src/archimate_adapter/config.py.
-
-## Quick start with tools
-
-### 1. Start GraphDB
-
-```powershell
-cd docker/graphdb
-docker compose up -d
-```
-
-### 2. Choose the XML file to import
-
-Place the XML file you want to import in `out/`, for example:
-
-```text
-out/phase1_supported_types.xml
-```
-
-If you want to use a different filename, update the default import path in:
-
-```text
-src/archimate_adapter/config.py
-```
-
-### 3. Import XML into canonical RDF
-
-```powershell
-py tools/import_xml_to_graphdb.py
-```
-
-This transforms the selected XML file into canonical RDF in GraphDB in a separate named model graph.
-
-### 4. Export canonical RDF back to XML
-
-```powershell
-py tools/export_graphdb_to_xml.py
-```
-
-By default, the tools use settings from:
-
-```text
-src/archimate_adapter/config.py
-```
 
 ## How the adapter works
 
@@ -361,65 +322,6 @@ But instead:
 
 This keeps the canonical form close to the Mendoza ontology.
 
-## Important implementation lesson
-
-In GraphDB visualization, multiple predicates may appear on one edge, for example a concrete relationship plus an inferred super-property such as `structuralRelationship`.
-
-This is expected behavior and not a roundtrip bug.
-
-## Running tests
-
-You need the Python setup section above if you want to run tests.
-
-### Run one batch test
-
-Example:
-
-```powershell
-py -m pytest tests/test_business_completion_batch.py -v
-```
-
-### Run integration tests only
-
-```powershell
-py -m pytest -m integration -v
-```
-
-### Run the mixed roundtrip test
-
-```powershell
-py -m pytest tests/test_roundtrip_supported_phase1_types.py -v
-```
-
-### Run everything
-
-```powershell
-py -m pytest -v
-```
-
-## What the tests cover
-
-The test strategy is built from:
-
-- parser tests
-- SPARQL build tests
-- import integration tests
-- export integration tests
-- mixed roundtrip test for the full supported subset
-
-Each batch usually has one combined test file.
-
-## Practical workflow
-
-The usual workflow is:
-
-1. start GraphDB
-2. choose an Exchange XML file and import it into a named graph
-3. inspect the imported model in GraphDB
-4. run batch tests if needed
-5. run the mixed roundtrip test
-6. export the model back to XML
-7. optionally inspect the exported XML manually in Archi or another tool
 
 ## Status
 

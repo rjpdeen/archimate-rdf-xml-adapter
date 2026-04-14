@@ -20,30 +20,31 @@ The focus in **Phase 1** is on:
 
 ## Quick start with GraphDB and tools
 
-### 0. Grapdb licence
+Use this quick start if you want to:
+
+- start GraphDB locally
+- run the Python import/export tools
+- work from your own cloned copy of this repository
+
+### 1. Start GraphDB
 
 This repository does **not** include a GraphDB license file.
 
-Starting with GraphDB 11, GraphDB Free requires a license file that you must request yourself. You can request a free GraphDB license on the Ontotext GraphDB download page. Ontotext will send the free license to your email address. 
-
-After receiving your license file, place it here, with this exact name:
+Starting with GraphDB 11, GraphDB Free requires a license file that you must request yourself. After receiving the license file, place it here:
 
 ```text
 docker/graphdb/init/GRAPHDB_FREE_v11.3.license
 ```
 
-The Docker setup expects the license file at that path.
-
-### 1. Start GraphDB
-
-If you only want to start GraphDB locally, Docker is sufficient:
+Then start GraphDB:
 
 ```powershell
 cd docker/graphdb
 docker compose up -d
 ```
+You should see a repo and loaded base model in GraphDB after a while.
 
-View logs (it may take a minute to set up GraphDB):
+View logs if needed:
 
 ```powershell
 docker compose logs -f graphdb
@@ -55,31 +56,44 @@ The GraphDB Workbench is normally available at:
 http://localhost:7200
 ```
 
-When you open GraphDB portal, you should see a repo and a loaded base model (default graph).
+### 2. Create a local Python environment
 
-### 2. Import XML into canonical RDF
+If you want to run the Python tools, it is recommended to create a local virtual environment in the repository root. This keeps the dependencies of this clone isolated from other Python projects on your machine.
 
-```powershell
-py tools/import_xml_to_graphdb.py
-```
-
-This transforms the selected XML file into canonical RDF in GraphDB in a separate named model graph.
-
-### 3. Export canonical RDF back to XML
-You can make some changes in the imported model, before exporting it back to XML format.
+In Windows PowerShell:
 
 ```powershell
-py tools/export_graphdb_to_xml.py
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e .
 ```
 
-By default, the tools use settings from:
+Explanation:
 
-```text
-src/archimate_adapter/config.py
+- `py -m venv .venv` creates a local Python environment in the `.venv` folder
+- `.\.venv\Scripts\Activate.ps1` activates that environment in PowerShell
+- `pip install -e .` installs this repository in editable mode, so the tools use the local source code from this clone
+
+If PowerShell blocks the activation script, you can allow it for the current session only:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
+Then run again:
 
-## GraphDB repository and base model
+```powershell
+.\.venv\Scripts\Activate.ps1
+pip install -e .
+```
+
+When you open a new terminal later, activate the environment again before running the tools:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 3. GraphDB repository and ontology/base
 
 The tools and integration tests assume a GraphDB repository with id:
 
@@ -89,34 +103,67 @@ archimate_phase1
 
 This repository is created automatically by the Docker GraphDB init flow.
 
-No manual action is needed after cloning for the ontology/base initialization.
+No manual action is needed for the ontology/base initialization. When GraphDB starts, the init flow creates the repository and loads `archimate.ttl` into the default graph as the base model.
 
-When you start GraphDB with:
+That base model remains present when you import an XML file. XML import writes the imported model into a separate named graph.
 
-```powershell
-cd docker/graphdb
-docker compose up -d
-```
+### 4. Choose the XML file to import
 
-the init flow automatically creates the repository and loads `archimate.ttl` into the default graph as the base model.
-
-That base model is not deleted when you import an XML file. XML import writes the imported model to a separate named graph.
-
-## Choose the XML file to import
-
-The first manual action after cloning is choosing the ArchiMate Exchange XML file you want to import into GraphDB.
-
-By default, the import tool expects this file:
+Place the XML file you want to import in `out/`, for example:
 
 ```text
 out/phase1_supported_types.xml
 ```
 
-So after cloning the repo, you can either:
+If you want to use a different file, update the default import path in:
 
-- use that default file which is present in `out/`
-- or place another XML file in `out/` and update the path in `src/archimate_adapter/config.py`
+```text
+src/archimate_adapter/config.py
+```
 
+### 5. Import XML into canonical RDF
+
+Run:
+
+```powershell
+py tools/import_xml_to_graphdb.py
+```
+
+This transforms the selected XML file into canonical RDF in GraphDB in a separate named model graph.
+
+### 6. Export canonical RDF back to XML
+
+Run:
+
+```powershell
+py tools/export_graphdb_to_xml.py
+```
+
+By default, the tools use the settings from:
+
+```text
+src/archimate_adapter/config.py
+```
+
+## Run tests if needed
+
+Example:
+
+```powershell
+py -m pytest tests/test_business_completion_batch.py -v
+```
+
+Run integration tests only:
+
+```powershell
+py -m pytest -m integration -v
+```
+
+Run everything:
+
+```powershell
+py -m pytest -v
+```
 
 ## Canonical RDF form
 

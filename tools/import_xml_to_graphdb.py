@@ -15,6 +15,11 @@ from archimate_adapter.services.import_xml_to_canonical_rdf import (
 
 def main() -> None:
     input_path = Path(DEFAULT_IMPORT_XML_PATH)
+    print("GRAPHDB_BASE_URL =", GRAPHDB_BASE_URL)
+    print("GRAPHDB_REPOSITORY_ID =", GRAPHDB_REPOSITORY_ID)
+    print("DEFAULT_MODEL_GRAPH_IRI =", DEFAULT_MODEL_GRAPH_IRI)
+    print("DEFAULT_IMPORT_XML_PATH =", input_path.resolve())
+    print("INPUT EXISTS =", input_path.exists())
 
     service = ImportXmlToCanonicalRdfService(
         graphdb_base_url=GRAPHDB_BASE_URL,

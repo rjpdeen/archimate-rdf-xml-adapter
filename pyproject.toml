@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
   "requests>=2.32",
   "PyYAML>=6.0",
+  "rdflib>=7.0",
   "pytest>=9.0"
 ]
 

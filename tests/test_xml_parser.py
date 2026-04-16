@@ -325,6 +325,74 @@ def test_parse_supported_motivation_elements():
     assert model.relationships[2].target_id == "goal-1"
 
 
+def test_parse_supported_additional_archimate_element_types():
+    xml_text = """\
+    <model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           identifier="model-1"
+           version="1.0">
+      <elements>
+        <element identifier="capability-1" xsi:type="Capability">
+          <name xml:lang="en">Operational Capability</name>
+        </element>
+        <element identifier="courseofaction-1" xsi:type="CourseOfAction">
+          <name xml:lang="en">Transition Plan</name>
+        </element>
+        <element identifier="deliverable-1" xsi:type="Deliverable">
+          <name xml:lang="en">Project Deliverable</name>
+        </element>
+        <element identifier="gap-1" xsi:type="Gap">
+          <name xml:lang="en">Current Capability Gap</name>
+        </element>
+        <element identifier="grouping-1" xsi:type="Grouping">
+          <name xml:lang="en">Stakeholder Group</name>
+        </element>
+        <element identifier="implementationevent-1" xsi:type="ImplementationEvent">
+          <name xml:lang="en">Deployment Event</name>
+        </element>
+        <element identifier="location-1" xsi:type="Location">
+          <name xml:lang="en">Data Center Location</name>
+        </element>
+        <element identifier="outcome-1" xsi:type="Outcome">
+          <name xml:lang="en">Operational Outcome</name>
+        </element>
+        <element identifier="path-1" xsi:type="Path">
+          <name xml:lang="en">Process Path</name>
+        </element>
+        <element identifier="plateau-1" xsi:type="Plateau">
+          <name xml:lang="en">Target Plateau</name>
+        </element>
+        <element identifier="resource-1" xsi:type="Resource">
+          <name xml:lang="en">Operational Resource</name>
+        </element>
+        <element identifier="valuestream-1" xsi:type="ValueStream">
+          <name xml:lang="en">Customer Value Stream</name>
+        </element>
+        <element identifier="workpackage-1" xsi:type="WorkPackage">
+          <name xml:lang="en">Implementation Work Package</name>
+        </element>
+      </elements>
+    </model>
+    """
+
+    model = parse_archimate_model_string(xml_text)
+
+    assert len(model.elements) == 13
+    assert model.get_element("capability-1").xml_type == "Capability"
+    assert model.get_element("courseofaction-1").xml_type == "CourseOfAction"
+    assert model.get_element("deliverable-1").xml_type == "Deliverable"
+    assert model.get_element("gap-1").xml_type == "Gap"
+    assert model.get_element("grouping-1").xml_type == "Grouping"
+    assert model.get_element("implementationevent-1").xml_type == "ImplementationEvent"
+    assert model.get_element("location-1").xml_type == "Location"
+    assert model.get_element("outcome-1").xml_type == "Outcome"
+    assert model.get_element("path-1").xml_type == "Path"
+    assert model.get_element("plateau-1").xml_type == "Plateau"
+    assert model.get_element("resource-1").xml_type == "Resource"
+    assert model.get_element("valuestream-1").xml_type == "ValueStream"
+    assert model.get_element("workpackage-1").xml_type == "WorkPackage"
+
+
 def test_parse_model_with_unsupported_element_type_raises():
     xml_text = """\
     <model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
@@ -332,8 +400,8 @@ def test_parse_model_with_unsupported_element_type_raises():
            identifier="model-1"
            version="1.0">
       <elements>
-        <element identifier="plateau-1" xsi:type="Plateau">
-          <name xml:lang="en">Target State</name>
+        <element identifier="unsupported-1" xsi:type="UnsupportedType">
+          <name xml:lang="en">Unsupported Type</name>
         </element>
       </elements>
     </model>
@@ -342,7 +410,7 @@ def test_parse_model_with_unsupported_element_type_raises():
     with pytest.raises(ArchimateXmlParseError) as exc:
         parse_archimate_model_string(xml_text)
 
-    assert "Unsupported element xsi:type 'Plateau'" in str(exc.value)
+    assert "Unsupported element xsi:type 'UnsupportedType'" in str(exc.value)
 
 
 def test_parse_relationship_without_source_raises():

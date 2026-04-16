@@ -227,6 +227,71 @@
       <documentation xml:lang="en">Value representing sustainable business operations.</documentation>
     </element>
 
+    <element identifier="capability-1" xsi:type="Capability">
+      <name xml:lang="en">Operational Capability</name>
+      <documentation xml:lang="en">Capability that supports operational outcomes.</documentation>
+    </element>
+
+    <element identifier="courseofaction-1" xsi:type="CourseOfAction">
+      <name xml:lang="en">Transition Plan</name>
+      <documentation xml:lang="en">Course of action for the next phase of the program.</documentation>
+    </element>
+
+    <element identifier="deliverable-1" xsi:type="Deliverable">
+      <name xml:lang="en">Project Deliverable</name>
+      <documentation xml:lang="en">A deliverable produced by the work package.</documentation>
+    </element>
+
+    <element identifier="gap-1" xsi:type="Gap">
+      <name xml:lang="en">Current Capability Gap</name>
+      <documentation xml:lang="en">Gap between current and target capabilities.</documentation>
+    </element>
+
+    <element identifier="grouping-1" xsi:type="Grouping">
+      <name xml:lang="en">Stakeholder Group</name>
+      <documentation xml:lang="en">Grouping of stakeholders for the initiative.</documentation>
+    </element>
+
+    <element identifier="implementationevent-1" xsi:type="ImplementationEvent">
+      <name xml:lang="en">Deployment Event</name>
+      <documentation xml:lang="en">Event marking the implementation of the solution.</documentation>
+    </element>
+
+    <element identifier="location-1" xsi:type="Location">
+      <name xml:lang="en">Data Center Location</name>
+      <documentation xml:lang="en">Physical location hosting the deployment.</documentation>
+    </element>
+
+    <element identifier="outcome-1" xsi:type="Outcome">
+      <name xml:lang="en">Operational Outcome</name>
+      <documentation xml:lang="en">Desired outcome from operational changes.</documentation>
+    </element>
+
+    <element identifier="path-1" xsi:type="Path">
+      <name xml:lang="en">Process Path</name>
+      <documentation xml:lang="en">Path that guides the process sequence.</documentation>
+    </element>
+
+    <element identifier="plateau-1" xsi:type="Plateau">
+      <name xml:lang="en">Target Plateau</name>
+      <documentation xml:lang="en">Target state plateau for the initiative.</documentation>
+    </element>
+
+    <element identifier="resource-1" xsi:type="Resource">
+      <name xml:lang="en">Operational Resource</name>
+      <documentation xml:lang="en">Resource used to support the capability.</documentation>
+    </element>
+
+    <element identifier="valuestream-1" xsi:type="ValueStream">
+      <name xml:lang="en">Customer Value Stream</name>
+      <documentation xml:lang="en">Stream delivering value to the customer.</documentation>
+    </element>
+
+    <element identifier="workpackage-1" xsi:type="WorkPackage">
+      <name xml:lang="en">Implementation Work Package</name>
+      <documentation xml:lang="en">Work package delivering the implementation plan.</documentation>
+    </element>
+
     <element identifier="appint-1" xsi:type="ApplicationInteraction">
       <name xml:lang="en">Coordinate Claim Handling</name>
       <documentation xml:lang="en">Application interaction for coordinated claim handling.</documentation>

@@ -87,6 +87,32 @@ xml_to_rdf:
     rdf_class: "https://purl.org/archimate#Constraint"
   Meaning:
     rdf_class: "https://purl.org/archimate#Meaning"
+  Capability:
+    rdf_class: "https://purl.org/archimate#Capability"
+  CourseOfAction:
+    rdf_class: "https://purl.org/archimate#CourseOfAction"
+  Deliverable:
+    rdf_class: "https://purl.org/archimate#Deliverable"
+  Gap:
+    rdf_class: "https://purl.org/archimate#Gap"
+  Grouping:
+    rdf_class: "https://purl.org/archimate#Grouping"
+  ImplementationEvent:
+    rdf_class: "https://purl.org/archimate#ImplementationEvent"
+  Location:
+    rdf_class: "https://purl.org/archimate#Location"
+  Outcome:
+    rdf_class: "https://purl.org/archimate#Outcome"
+  Path:
+    rdf_class: "https://purl.org/archimate#Path"
+  Plateau:
+    rdf_class: "https://purl.org/archimate#Plateau"
+  Resource:
+    rdf_class: "https://purl.org/archimate#Resource"
+  ValueStream:
+    rdf_class: "https://purl.org/archimate#ValueStream"
+  WorkPackage:
+    rdf_class: "https://purl.org/archimate#WorkPackage"
   Goal:
     rdf_class: "https://purl.org/archimate#Goal"
   Requirement:
@@ -190,3 +216,29 @@ rdf_to_xml:
     xml_type: "Requirement"
   "https://purl.org/archimate#Value":
     xml_type: "Value"
+  "https://purl.org/archimate#Capability":
+    xml_type: "Capability"
+  "https://purl.org/archimate#CourseOfAction":
+    xml_type: "CourseOfAction"
+  "https://purl.org/archimate#Deliverable":
+    xml_type: "Deliverable"
+  "https://purl.org/archimate#Gap":
+    xml_type: "Gap"
+  "https://purl.org/archimate#Grouping":
+    xml_type: "Grouping"
+  "https://purl.org/archimate#ImplementationEvent":
+    xml_type: "ImplementationEvent"
+  "https://purl.org/archimate#Location":
+    xml_type: "Location"
+  "https://purl.org/archimate#Outcome":
+    xml_type: "Outcome"
+  "https://purl.org/archimate#Path":
+    xml_type: "Path"
+  "https://purl.org/archimate#Plateau":
+    xml_type: "Plateau"
+  "https://purl.org/archimate#Resource":
+    xml_type: "Resource"
+  "https://purl.org/archimate#ValueStream":
+    xml_type: "ValueStream"
+  "https://purl.org/archimate#WorkPackage":
+    xml_type: "WorkPackage"

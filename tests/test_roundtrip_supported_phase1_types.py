@@ -117,6 +117,19 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
     goal_iri = f"{EX_NS}goal-1"
     requirement_iri = f"{EX_NS}requirement-1"
     value_iri = f"{EX_NS}value-1"
+    capability_iri = f"{EX_NS}capability-1"
+    courseofaction_iri = f"{EX_NS}courseofaction-1"
+    deliverable_iri = f"{EX_NS}deliverable-1"
+    gap_iri = f"{EX_NS}gap-1"
+    grouping_iri = f"{EX_NS}grouping-1"
+    implementationevent_iri = f"{EX_NS}implementationevent-1"
+    location_iri = f"{EX_NS}location-1"
+    outcome_iri = f"{EX_NS}outcome-1"
+    path_iri = f"{EX_NS}path-1"
+    plateau_iri = f"{EX_NS}plateau-1"
+    resource_iri = f"{EX_NS}resource-1"
+    valuestream_iri = f"{EX_NS}valuestream-1"
+    workpackage_iri = f"{EX_NS}workpackage-1"
 
     try:
         client.update(f"CLEAR GRAPH <{source_graph_iri}>")
@@ -181,6 +194,19 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "Goal",
             "Requirement",
             "Value",
+            "Capability",
+            "CourseOfAction",
+            "Deliverable",
+            "Gap",
+            "Grouping",
+            "ImplementationEvent",
+            "Location",
+            "Outcome",
+            "Path",
+            "Plateau",
+            "Resource",
+            "ValueStream",
+            "WorkPackage",
         ]:
             assert f'xsi:type="{xml_type}"' in exported_xml
 
@@ -267,6 +293,19 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "goal-1",
             "requirement-1",
             "value-1",
+            "capability-1",
+            "courseofaction-1",
+            "deliverable-1",
+            "gap-1",
+            "grouping-1",
+            "implementationevent-1",
+            "location-1",
+            "outcome-1",
+            "path-1",
+            "plateau-1",
+            "resource-1",
+            "valuestream-1",
+            "workpackage-1",
         ]:
             assert f'identifier="{identifier}"' in exported_xml
 
@@ -397,6 +436,19 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{goal_iri}> rdf:type archimate:Goal .
                 <{requirement_iri}> rdf:type archimate:Requirement .
                 <{value_iri}> rdf:type archimate:Value .
+                <{capability_iri}> rdf:type archimate:Capability .
+                <{courseofaction_iri}> rdf:type archimate:CourseOfAction .
+                <{deliverable_iri}> rdf:type archimate:Deliverable .
+                <{gap_iri}> rdf:type archimate:Gap .
+                <{grouping_iri}> rdf:type archimate:Grouping .
+                <{implementationevent_iri}> rdf:type archimate:ImplementationEvent .
+                <{location_iri}> rdf:type archimate:Location .
+                <{outcome_iri}> rdf:type archimate:Outcome .
+                <{path_iri}> rdf:type archimate:Path .
+                <{plateau_iri}> rdf:type archimate:Plateau .
+                <{resource_iri}> rdf:type archimate:Resource .
+                <{valuestream_iri}> rdf:type archimate:ValueStream .
+                <{workpackage_iri}> rdf:type archimate:WorkPackage .
 
                 <{app_iri}> archimate:serving <{actor_iri}> .
                 <{actor_iri}> archimate:assignment <{process_iri}> .

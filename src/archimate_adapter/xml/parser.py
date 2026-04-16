@@ -4,6 +4,10 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from archimate_adapter.dto.model import ElementDTO, RelationshipDTO, ModelDTO
+from archimate_adapter.services.xml_to_rdf import (
+    ElementTypeRegistry,
+    RelationshipTypeRegistry,
+)
 
 
 ARCHIMATE_NS = "http://www.opengroup.org/xsd/archimate/3.0/"
@@ -14,69 +18,11 @@ NS = {
     "xsi": XSI_NS,
 }
 
-SUPPORTED_ELEMENT_TYPES = {
-    "ApplicationCollaboration",
-    "ApplicationComponent",
-    "ApplicationEvent",
-    "ApplicationFunction",
-    "ApplicationInteraction",
-    "ApplicationInterface",
-    "ApplicationProcess",
-    "ApplicationService",
-    "BusinessActor",
-    "BusinessCollaboration",
-    "Contract",
-    "BusinessEvent",
-    "BusinessFunction",
-    "Node",
-    "Device",
-    "SystemSoftware",
-    "TechnologyInterface",
-    "TechnologyService",
-    "TechnologyCollaboration",
-    "TechnologyEvent",
-    "TechnologyFunction",
-    "TechnologyInteraction",
-    "TechnologyProcess",
-    "Artifact",
-    "CommunicationNetwork",
-    "Equipment",
-    "Facility",
-    "Material",
-    "DistributionNetwork",
-    "Stakeholder",
-    "Driver",
-    "Assessment",
-    "Principle",
-    "Constraint",
-    "Meaning",
-    "Goal",
-    "Requirement",
-    "Value",
-    "BusinessInteraction",
-    "BusinessInterface",
-    "BusinessObject",
-    "BusinessProcess",
-    "BusinessRole",
-    "BusinessService",
-    "DataObject",
-    "Product",
-    "Representation",
-}
+ELEMENT_MAPPING_PATH = Path(__file__).resolve().parents[1] / "mapping" / "element_types.yaml"
+RELATIONSHIP_MAPPING_PATH = Path(__file__).resolve().parents[1] / "mapping" / "relationship_types.yaml"
 
-SUPPORTED_RELATIONSHIP_TYPES = {
-    "Access",
-    "Aggregation",
-    "Assignment",
-    "Association",
-    "Composition",
-    "Flow",
-    "Influence",
-    "Realization",
-    "Serving",
-    "Specialization",
-    "Triggering",
-}
+ELEMENT_REGISTRY = ElementTypeRegistry.from_yaml(ELEMENT_MAPPING_PATH)
+RELATIONSHIP_REGISTRY = RelationshipTypeRegistry.from_yaml(RELATIONSHIP_MAPPING_PATH)
 
 
 class ArchimateXmlParseError(ValueError):
@@ -130,7 +76,7 @@ def _parse_element(element_el: ET.Element) -> ElementDTO:
     identifier = _required_attr(element_el, "identifier")
     xml_type = _required_xsi_type(element_el)
 
-    if xml_type not in SUPPORTED_ELEMENT_TYPES:
+    if xml_type not in ELEMENT_REGISTRY.xml_to_class:
         raise ArchimateXmlParseError(
             f"Unsupported element xsi:type '{xml_type}' for element '{identifier}'."
         )
@@ -147,7 +93,7 @@ def _parse_relationship(rel_el: ET.Element) -> RelationshipDTO:
     identifier = _required_attr(rel_el, "identifier")
     xml_type = _required_xsi_type(rel_el)
 
-    if xml_type not in SUPPORTED_RELATIONSHIP_TYPES:
+    if xml_type not in RELATIONSHIP_REGISTRY.xml_to_config:
         raise ArchimateXmlParseError(
             f"Unsupported relationship xsi:type '{xml_type}' for relationship '{identifier}'."
         )

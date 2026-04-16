@@ -58,9 +58,9 @@
     <relationship identifier="rel-29"
                   source="busif-1"
                   target="bussvc-3"
-                  xsi:type="Serving">
-      <name xml:lang="en">serves</name>
-      <documentation xml:lang="en">Business interface serves business service.</documentation>
+                  xsi:type="Assignment">
+      <name xml:lang="en">assigns</name>
+      <documentation xml:lang="en">Business interface assigns business service.</documentation>
     </relationship>
     <relationship identifier="rel-30"
                   source="bussvc-3"

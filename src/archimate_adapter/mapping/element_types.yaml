@@ -43,6 +43,56 @@ xml_to_rdf:
     rdf_class: "https://purl.org/archimate#Product"
   Representation:
     rdf_class: "https://purl.org/archimate#Representation"
+  Node:
+    rdf_class: "https://purl.org/archimate#Node"
+  Device:
+    rdf_class: "https://purl.org/archimate#Device"
+  SystemSoftware:
+    rdf_class: "https://purl.org/archimate#SystemSoftware"
+  TechnologyInterface:
+    rdf_class: "https://purl.org/archimate#TechnologyInterface"
+  TechnologyService:
+    rdf_class: "https://purl.org/archimate#TechnologyService"
+  TechnologyCollaboration:
+    rdf_class: "https://purl.org/archimate#TechnologyCollaboration"
+  TechnologyEvent:
+    rdf_class: "https://purl.org/archimate#TechnologyEvent"
+  TechnologyFunction:
+    rdf_class: "https://purl.org/archimate#TechnologyFunction"
+  TechnologyInteraction:
+    rdf_class: "https://purl.org/archimate#TechnologyInteraction"
+  TechnologyProcess:
+    rdf_class: "https://purl.org/archimate#TechnologyProcess"
+  Artifact:
+    rdf_class: "https://purl.org/archimate#Artifact"
+  CommunicationNetwork:
+    rdf_class: "https://purl.org/archimate#CommunicationNetwork"
+  Equipment:
+    rdf_class: "https://purl.org/archimate#Equipment"
+  Facility:
+    rdf_class: "https://purl.org/archimate#Facility"
+  Material:
+    rdf_class: "https://purl.org/archimate#Material"
+  DistributionNetwork:
+    rdf_class: "https://purl.org/archimate#DistributionNetwork"
+  Stakeholder:
+    rdf_class: "https://purl.org/archimate#Stakeholder"
+  Driver:
+    rdf_class: "https://purl.org/archimate#Driver"
+  Assessment:
+    rdf_class: "https://purl.org/archimate#Assessment"
+  Principle:
+    rdf_class: "https://purl.org/archimate#Principle"
+  Constraint:
+    rdf_class: "https://purl.org/archimate#Constraint"
+  Meaning:
+    rdf_class: "https://purl.org/archimate#Meaning"
+  Goal:
+    rdf_class: "https://purl.org/archimate#Goal"
+  Requirement:
+    rdf_class: "https://purl.org/archimate#Requirement"
+  Value:
+    rdf_class: "https://purl.org/archimate#Value"
 
 rdf_to_xml:
   "https://purl.org/archimate#ApplicationCollaboration":
@@ -90,3 +140,53 @@ rdf_to_xml:
     xml_type: "Product"
   "https://purl.org/archimate#Representation":
     xml_type: "Representation"
+  "https://purl.org/archimate#Node":
+    xml_type: "Node"
+  "https://purl.org/archimate#Device":
+    xml_type: "Device"
+  "https://purl.org/archimate#SystemSoftware":
+    xml_type: "SystemSoftware"
+  "https://purl.org/archimate#TechnologyInterface":
+    xml_type: "TechnologyInterface"
+  "https://purl.org/archimate#TechnologyService":
+    xml_type: "TechnologyService"
+  "https://purl.org/archimate#TechnologyCollaboration":
+    xml_type: "TechnologyCollaboration"
+  "https://purl.org/archimate#TechnologyEvent":
+    xml_type: "TechnologyEvent"
+  "https://purl.org/archimate#TechnologyFunction":
+    xml_type: "TechnologyFunction"
+  "https://purl.org/archimate#TechnologyInteraction":
+    xml_type: "TechnologyInteraction"
+  "https://purl.org/archimate#TechnologyProcess":
+    xml_type: "TechnologyProcess"
+  "https://purl.org/archimate#Artifact":
+    xml_type: "Artifact"
+  "https://purl.org/archimate#CommunicationNetwork":
+    xml_type: "CommunicationNetwork"
+  "https://purl.org/archimate#Equipment":
+    xml_type: "Equipment"
+  "https://purl.org/archimate#Facility":
+    xml_type: "Facility"
+  "https://purl.org/archimate#Material":
+    xml_type: "Material"
+  "https://purl.org/archimate#DistributionNetwork":
+    xml_type: "DistributionNetwork"
+  "https://purl.org/archimate#Stakeholder":
+    xml_type: "Stakeholder"
+  "https://purl.org/archimate#Driver":
+    xml_type: "Driver"
+  "https://purl.org/archimate#Assessment":
+    xml_type: "Assessment"
+  "https://purl.org/archimate#Principle":
+    xml_type: "Principle"
+  "https://purl.org/archimate#Constraint":
+    xml_type: "Constraint"
+  "https://purl.org/archimate#Meaning":
+    xml_type: "Meaning"
+  "https://purl.org/archimate#Goal":
+    xml_type: "Goal"
+  "https://purl.org/archimate#Requirement":
+    xml_type: "Requirement"
+  "https://purl.org/archimate#Value":
+    xml_type: "Value"

@@ -102,6 +102,131 @@
       <documentation xml:lang="en">Application collaboration of components coordinating claim handling.</documentation>
     </element>
 
+    <element identifier="technode-1" xsi:type="Node">
+      <name xml:lang="en">Data Center Node</name>
+      <documentation xml:lang="en">Technology node representing the physical infrastructure.</documentation>
+    </element>
+
+    <element identifier="device-1" xsi:type="Device">
+      <name xml:lang="en">Application Server</name>
+      <documentation xml:lang="en">Device hosting the application runtime.</documentation>
+    </element>
+
+    <element identifier="syssoft-1" xsi:type="SystemSoftware">
+      <name xml:lang="en">Middleware Platform</name>
+      <documentation xml:lang="en">System software platform supporting application services.</documentation>
+    </element>
+
+    <element identifier="techif-1" xsi:type="TechnologyInterface">
+      <name xml:lang="en">Technology Interface</name>
+      <documentation xml:lang="en">Technology interface for the deployment environment.</documentation>
+    </element>
+
+    <element identifier="techsvc-1" xsi:type="TechnologyService">
+      <name xml:lang="en">Hosting Service</name>
+      <documentation xml:lang="en">Technology service offered by the infrastructure.</documentation>
+    </element>
+
+    <element identifier="techcollab-1" xsi:type="TechnologyCollaboration">
+      <name xml:lang="en">Infrastructure Collaboration</name>
+      <documentation xml:lang="en">Technology collaboration linking infrastructure elements.</documentation>
+    </element>
+
+    <element identifier="techevt-1" xsi:type="TechnologyEvent">
+      <name xml:lang="en">System Startup</name>
+      <documentation xml:lang="en">Technology event representing system startup.</documentation>
+    </element>
+
+    <element identifier="techfn-1" xsi:type="TechnologyFunction">
+      <name xml:lang="en">Platform Management</name>
+      <documentation xml:lang="en">Technology function for managing the platform.</documentation>
+    </element>
+
+    <element identifier="techint-1" xsi:type="TechnologyInteraction">
+      <name xml:lang="en">Node Interaction</name>
+      <documentation xml:lang="en">Technology interaction between infrastructure components.</documentation>
+    </element>
+
+    <element identifier="techproc-1" xsi:type="TechnologyProcess">
+      <name xml:lang="en">Deployment Process</name>
+      <documentation xml:lang="en">Technology process executing deployment.</documentation>
+    </element>
+
+    <element identifier="artifact-1" xsi:type="Artifact">
+      <name xml:lang="en">Deployment Script</name>
+      <documentation xml:lang="en">Artifact used to deploy the system.</documentation>
+    </element>
+
+    <element identifier="commnet-1" xsi:type="CommunicationNetwork">
+      <name xml:lang="en">Internal Network</name>
+      <documentation xml:lang="en">Communication network connecting the infrastructure.</documentation>
+    </element>
+
+    <element identifier="equipment-1" xsi:type="Equipment">
+      <name xml:lang="en">Production Equipment</name>
+      <documentation xml:lang="en">Physical equipment used in production.</documentation>
+    </element>
+
+    <element identifier="facility-1" xsi:type="Facility">
+      <name xml:lang="en">Manufacturing Facility</name>
+      <documentation xml:lang="en">Facility housing the equipment and processes.</documentation>
+    </element>
+
+    <element identifier="material-1" xsi:type="Material">
+      <name xml:lang="en">Raw Material</name>
+      <documentation xml:lang="en">Material consumed by the equipment.</documentation>
+    </element>
+
+    <element identifier="distribution-1" xsi:type="DistributionNetwork">
+      <name xml:lang="en">Plant Distribution Network</name>
+      <documentation xml:lang="en">Network distributing resources to equipment.</documentation>
+    </element>
+
+    <element identifier="stakeholder-1" xsi:type="Stakeholder">
+      <name xml:lang="en">Executive Sponsor</name>
+      <documentation xml:lang="en">Stakeholder advocating the initiative.</documentation>
+    </element>
+
+    <element identifier="driver-1" xsi:type="Driver">
+      <name xml:lang="en">Cost Reduction</name>
+      <documentation xml:lang="en">Driver for reducing operating costs.</documentation>
+    </element>
+
+    <element identifier="goal-1" xsi:type="Goal">
+      <name xml:lang="en">Reduce Operational Cost</name>
+      <documentation xml:lang="en">Goal to improve cost efficiency.</documentation>
+    </element>
+
+    <element identifier="assessment-1" xsi:type="Assessment">
+      <name xml:lang="en">Risk Assessment</name>
+      <documentation xml:lang="en">Assessment of current operational risk.</documentation>
+    </element>
+
+    <element identifier="principle-1" xsi:type="Principle">
+      <name xml:lang="en">Cost Efficiency Principle</name>
+      <documentation xml:lang="en">Principle to reduce costs where possible.</documentation>
+    </element>
+
+    <element identifier="constraint-1" xsi:type="Constraint">
+      <name xml:lang="en">Budget Constraint</name>
+      <documentation xml:lang="en">Constraint limiting infrastructure spending.</documentation>
+    </element>
+
+    <element identifier="meaning-1" xsi:type="Meaning">
+      <name xml:lang="en">Operational Value Meaning</name>
+      <documentation xml:lang="en">Meaning that explains the value of sustainable operations.</documentation>
+    </element>
+
+    <element identifier="requirement-1" xsi:type="Requirement">
+      <name xml:lang="en">Lower Infrastructure Spend</name>
+      <documentation xml:lang="en">Requirement for reduced infrastructure expense.</documentation>
+    </element>
+
+    <element identifier="value-1" xsi:type="Value">
+      <name xml:lang="en">Sustainable Operations</name>
+      <documentation xml:lang="en">Value representing sustainable business operations.</documentation>
+    </element>
+
     <element identifier="appint-1" xsi:type="ApplicationInteraction">
       <name xml:lang="en">Coordinate Claim Handling</name>
       <documentation xml:lang="en">Application interaction for coordinated claim handling.</documentation>
@@ -428,9 +553,9 @@
     <relationship identifier="rel-29"
                   source="busif-1"
                   target="bussvc-3"
-                  xsi:type="Serving">
-      <name xml:lang="en">serves</name>
-      <documentation xml:lang="en">Business interface serves business service.</documentation>
+                  xsi:type="Assignment">
+      <name xml:lang="en">assigns</name>
+      <documentation xml:lang="en">Business interface assigns the business service.</documentation>
     </relationship>
 
     <relationship identifier="rel-30"
@@ -495,6 +620,70 @@
                   xsi:type="Specialization">
       <name xml:lang="en">specializes</name>
       <documentation xml:lang="en">Business role specializes more general business role.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-38"
+                  source="device-1"
+                  target="techsvc-1"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Device realizes the underlying technology service.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-39"
+                  source="techcollab-1"
+                  target="device-1"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Technology collaboration aggregates the device.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-40"
+                  source="commnet-1"
+                  target="techif-1"
+                  xsi:type="Aggregation">
+      <name xml:lang="en">contains</name>
+      <documentation xml:lang="en">Communication network aggregates the technology interface.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-41"
+                  source="equipment-1"
+                  target="material-1"
+                  xsi:type="Access">
+      <name xml:lang="en">uses</name>
+      <documentation xml:lang="en">Equipment accesses material.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-42"
+                  source="distribution-1"
+                  target="equipment-1"
+                  xsi:type="Flow">
+      <name xml:lang="en">flows to</name>
+      <documentation xml:lang="en">Distribution network flows to equipment.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-43"
+                  source="driver-1"
+                  target="goal-1"
+                  xsi:type="Influence">
+      <name xml:lang="en">influences</name>
+      <documentation xml:lang="en">Driver influences the business goal.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-44"
+                  source="requirement-1"
+                  target="goal-1"
+                  xsi:type="Realization">
+      <name xml:lang="en">realizes</name>
+      <documentation xml:lang="en">Requirement realizes the business goal.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-45"
+                  source="stakeholder-1"
+                  target="goal-1"
+                  xsi:type="Association">
+      <name xml:lang="en">is interested in</name>
+      <documentation xml:lang="en">Stakeholder is associated with the business goal.</documentation>
     </relationship>
   </relationships>
 </model>

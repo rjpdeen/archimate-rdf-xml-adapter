@@ -92,6 +92,31 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
     busobj3_iri = f"{EX_NS}busobj-3"
     busproc2_iri = f"{EX_NS}busproc-2"
     busproc3_iri = f"{EX_NS}busproc-3"
+    technode_iri = f"{EX_NS}technode-1"
+    device_iri = f"{EX_NS}device-1"
+    syssoft_iri = f"{EX_NS}syssoft-1"
+    techif_iri = f"{EX_NS}techif-1"
+    techsvc_iri = f"{EX_NS}techsvc-1"
+    techcollab_iri = f"{EX_NS}techcollab-1"
+    techevt_iri = f"{EX_NS}techevt-1"
+    techfn_iri = f"{EX_NS}techfn-1"
+    techint_iri = f"{EX_NS}techint-1"
+    techproc_iri = f"{EX_NS}techproc-1"
+    artifact_iri = f"{EX_NS}artifact-1"
+    commnet_iri = f"{EX_NS}commnet-1"
+    equipment_iri = f"{EX_NS}equipment-1"
+    facility_iri = f"{EX_NS}facility-1"
+    assessment_iri = f"{EX_NS}assessment-1"
+    principle_iri = f"{EX_NS}principle-1"
+    constraint_iri = f"{EX_NS}constraint-1"
+    meaning_iri = f"{EX_NS}meaning-1"
+    material_iri = f"{EX_NS}material-1"
+    distribution_iri = f"{EX_NS}distribution-1"
+    stakeholder_iri = f"{EX_NS}stakeholder-1"
+    driver_iri = f"{EX_NS}driver-1"
+    goal_iri = f"{EX_NS}goal-1"
+    requirement_iri = f"{EX_NS}requirement-1"
+    value_iri = f"{EX_NS}value-1"
 
     try:
         client.update(f"CLEAR GRAPH <{source_graph_iri}>")
@@ -131,6 +156,31 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "DataObject",
             "Product",
             "Representation",
+            "Node",
+            "Device",
+            "SystemSoftware",
+            "TechnologyInterface",
+            "TechnologyService",
+            "TechnologyCollaboration",
+            "TechnologyEvent",
+            "TechnologyFunction",
+            "TechnologyInteraction",
+            "TechnologyProcess",
+            "Artifact",
+            "CommunicationNetwork",
+            "Equipment",
+            "Facility",
+            "Material",
+            "DistributionNetwork",
+            "Stakeholder",
+            "Driver",
+            "Assessment",
+            "Principle",
+            "Constraint",
+            "Meaning",
+            "Goal",
+            "Requirement",
+            "Value",
         ]:
             assert f'xsi:type="{xml_type}"' in exported_xml
 
@@ -192,6 +242,31 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "busobj-3",
             "busproc-2",
             "busproc-3",
+            "technode-1",
+            "device-1",
+            "syssoft-1",
+            "techif-1",
+            "techsvc-1",
+            "techcollab-1",
+            "techevt-1",
+            "techfn-1",
+            "techint-1",
+            "techproc-1",
+            "artifact-1",
+            "commnet-1",
+            "equipment-1",
+            "facility-1",
+            "material-1",
+            "distribution-1",
+            "stakeholder-1",
+            "driver-1",
+            "assessment-1",
+            "principle-1",
+            "constraint-1",
+            "meaning-1",
+            "goal-1",
+            "requirement-1",
+            "value-1",
         ]:
             assert f'identifier="{identifier}"' in exported_xml
 
@@ -232,6 +307,14 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "rel-35",
             "rel-36",
             "rel-37",
+            "rel-38",
+            "rel-39",
+            "rel-40",
+            "rel-41",
+            "rel-42",
+            "rel-43",
+            "rel-44",
+            "rel-45",
         ]:
             assert f'identifier="{rel_id}"' in exported_xml
 
@@ -289,6 +372,31 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{busobj3_iri}> rdf:type archimate:BusinessObject .
                 <{busproc2_iri}> rdf:type archimate:BusinessProcess .
                 <{busproc3_iri}> rdf:type archimate:BusinessProcess .
+                <{technode_iri}> rdf:type archimate:Node .
+                <{device_iri}> rdf:type archimate:Device .
+                <{syssoft_iri}> rdf:type archimate:SystemSoftware .
+                <{techif_iri}> rdf:type archimate:TechnologyInterface .
+                <{techsvc_iri}> rdf:type archimate:TechnologyService .
+                <{techcollab_iri}> rdf:type archimate:TechnologyCollaboration .
+                <{techevt_iri}> rdf:type archimate:TechnologyEvent .
+                <{techfn_iri}> rdf:type archimate:TechnologyFunction .
+                <{techint_iri}> rdf:type archimate:TechnologyInteraction .
+                <{techproc_iri}> rdf:type archimate:TechnologyProcess .
+                <{artifact_iri}> rdf:type archimate:Artifact .
+                <{commnet_iri}> rdf:type archimate:CommunicationNetwork .
+                <{equipment_iri}> rdf:type archimate:Equipment .
+                <{facility_iri}> rdf:type archimate:Facility .
+                <{material_iri}> rdf:type archimate:Material .
+                <{distribution_iri}> rdf:type archimate:DistributionNetwork .
+                <{stakeholder_iri}> rdf:type archimate:Stakeholder .
+                <{driver_iri}> rdf:type archimate:Driver .
+                <{assessment_iri}> rdf:type archimate:Assessment .
+                <{principle_iri}> rdf:type archimate:Principle .
+                <{constraint_iri}> rdf:type archimate:Constraint .
+                <{meaning_iri}> rdf:type archimate:Meaning .
+                <{goal_iri}> rdf:type archimate:Goal .
+                <{requirement_iri}> rdf:type archimate:Requirement .
+                <{value_iri}> rdf:type archimate:Value .
 
                 <{app_iri}> archimate:serving <{actor_iri}> .
                 <{actor_iri}> archimate:assignment <{process_iri}> .
@@ -322,7 +430,7 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{busevt_iri}> archimate:triggering <{busint_iri}> .
 
                 <{role3_iri}> archimate:composition <{busif_iri}> .
-                <{busif_iri}> archimate:serving <{bussvc3_iri}> .
+                <{busif_iri}> archimate:assignment <{bussvc3_iri}> .
                 <{bussvc3_iri}> archimate:association <{contract1_iri}> .
                 <{product1_iri}> archimate:aggregation <{bussvc3_iri}> .
                 <{product1_iri}> archimate:aggregation <{contract1_iri}> .
@@ -331,6 +439,14 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{busproc2_iri}> archimate:flow <{busproc3_iri}> .
                 <{busproc2_iri}> archimate:influence <{busproc3_iri}> .
                 <{role3_iri}> archimate:specialization <{role4_iri}> .
+                <{device_iri}> archimate:realization <{techsvc_iri}> .
+                <{techcollab_iri}> archimate:aggregation <{device_iri}> .
+                <{commnet_iri}> archimate:aggregation <{techif_iri}> .
+                <{equipment_iri}> archimate:access <{material_iri}> .
+                <{distribution_iri}> archimate:flow <{equipment_iri}> .
+                <{driver_iri}> archimate:influence <{goal_iri}> .
+                <{requirement_iri}> archimate:realization <{goal_iri}> .
+                <{stakeholder_iri}> archimate:association <{goal_iri}> .
 
                 << <{app_iri}> archimate:serving <{actor_iri}> >>
                   archimate:identifier "rel-1" .
@@ -391,7 +507,7 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
 
                 << <{role3_iri}> archimate:composition <{busif_iri}> >>
                   archimate:identifier "rel-28" .
-                << <{busif_iri}> archimate:serving <{bussvc3_iri}> >>
+                << <{busif_iri}> archimate:assignment <{bussvc3_iri}> >>
                   archimate:identifier "rel-29" .
                 << <{bussvc3_iri}> archimate:association <{contract1_iri}> >>
                   archimate:identifier "rel-30" .
@@ -409,6 +525,16 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                   archimate:identifier "rel-36" .
                 << <{role3_iri}> archimate:specialization <{role4_iri}> >>
                   archimate:identifier "rel-37" .
+                << <{device_iri}> archimate:realization <{techsvc_iri}> >>
+                  archimate:identifier "rel-38" .
+                << <{techcollab_iri}> archimate:aggregation <{device_iri}> >>
+                  archimate:identifier "rel-39" .
+                << <{commnet_iri}> archimate:aggregation <{techif_iri}> >>
+                  archimate:identifier "rel-40" .
+                << <{equipment_iri}> archimate:access <{material_iri}> >>
+                  archimate:identifier "rel-41" .
+                << <{distribution_iri}> archimate:flow <{equipment_iri}> >>
+                  archimate:identifier "rel-42" .
               }}
             }}
             """

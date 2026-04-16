@@ -77,11 +77,11 @@ def test_parse_model_with_business_completion_batch():
           <documentation xml:lang="en">Business role is composed of business interface.</documentation>
         </relationship>
         <relationship identifier="rel-29"
-                      xsi:type="Serving"
+                      xsi:type="Assignment"
                       source="busif-1"
                       target="bussvc-3">
-          <name xml:lang="en">serves</name>
-          <documentation xml:lang="en">Business interface serves business service.</documentation>
+          <name xml:lang="en">assigns</name>
+          <documentation xml:lang="en">Business interface assigns business service.</documentation>
         </relationship>
         <relationship identifier="rel-30"
                       xsi:type="Association"
@@ -462,7 +462,7 @@ def test_import_from_file_inserts_business_completion_batch_into_named_graph() -
                 <{busproc3_iri}> rdf:type archimate:BusinessProcess .
 
                 <{role3_iri}> archimate:composition <{busif_iri}> .
-                <{busif_iri}> archimate:serving <{bussvc3_iri}> .
+                <{busif_iri}> archimate:assignment <{bussvc3_iri}> .
                 <{bussvc3_iri}> archimate:association <{contract1_iri}> .
                 <{product1_iri}> archimate:aggregation <{bussvc3_iri}> .
                 <{product1_iri}> archimate:aggregation <{contract1_iri}> .
@@ -474,7 +474,7 @@ def test_import_from_file_inserts_business_completion_batch_into_named_graph() -
 
                 << <{role3_iri}> archimate:composition <{busif_iri}> >>
                   archimate:identifier "rel-28" .
-                << <{busif_iri}> archimate:serving <{bussvc3_iri}> >>
+                << <{busif_iri}> archimate:assignment <{bussvc3_iri}> >>
                   archimate:identifier "rel-29" .
                 << <{bussvc3_iri}> archimate:association <{contract1_iri}> >>
                   archimate:identifier "rel-30" .

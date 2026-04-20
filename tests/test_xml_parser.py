@@ -371,13 +371,19 @@ def test_parse_supported_additional_archimate_element_types():
         <element identifier="workpackage-1" xsi:type="WorkPackage">
           <name xml:lang="en">Implementation Work Package</name>
         </element>
+        <element identifier="and-junction-1" xsi:type="AndJunction">
+          <name xml:lang="en">And Junction</name>
+        </element>
+        <element identifier="or-junction-1" xsi:type="OrJunction">
+          <name xml:lang="en">Or Junction</name>
+        </element>
       </elements>
     </model>
     """
 
     model = parse_archimate_model_string(xml_text)
 
-    assert len(model.elements) == 13
+    assert len(model.elements) == 15
     assert model.get_element("capability-1").xml_type == "Capability"
     assert model.get_element("courseofaction-1").xml_type == "CourseOfAction"
     assert model.get_element("deliverable-1").xml_type == "Deliverable"
@@ -391,6 +397,8 @@ def test_parse_supported_additional_archimate_element_types():
     assert model.get_element("resource-1").xml_type == "Resource"
     assert model.get_element("valuestream-1").xml_type == "ValueStream"
     assert model.get_element("workpackage-1").xml_type == "WorkPackage"
+    assert model.get_element("and-junction-1").xml_type == "AndJunction"
+    assert model.get_element("or-junction-1").xml_type == "OrJunction"
 
 
 def test_parse_model_with_unsupported_element_type_raises():

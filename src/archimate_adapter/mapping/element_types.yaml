@@ -119,6 +119,12 @@ xml_to_rdf:
     rdf_class: "https://purl.org/archimate#Requirement"
   Value:
     rdf_class: "https://purl.org/archimate#Value"
+  AndJunction:
+    rdf_class: "https://purl.org/archimate#Junction"
+    junction_type: "and"
+  OrJunction:
+    rdf_class: "https://purl.org/archimate#Junction"
+    junction_type: "or"
 
 rdf_to_xml:
   "https://purl.org/archimate#ApplicationCollaboration":
@@ -242,3 +248,5 @@ rdf_to_xml:
     xml_type: "ValueStream"
   "https://purl.org/archimate#WorkPackage":
     xml_type: "WorkPackage"
+  "https://purl.org/archimate#Junction":
+    xml_type: "Junction"

@@ -42,6 +42,12 @@ class ElementTypeRegistry:
         except KeyError as exc:
             raise KeyError(f"No RDF class configured for XML type: {xml_type}") from exc
 
+    def junction_type_for_xml_type(self, xml_type: str) -> str | None:
+        try:
+            return self.xml_to_rdf_map[xml_type].get("junction_type")
+        except KeyError:
+            return None
+
 
 @dataclass(slots=True)
 class RelationshipTypeRegistry:

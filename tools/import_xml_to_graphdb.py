@@ -20,6 +20,7 @@ def main() -> None:
     print("DEFAULT_MODEL_GRAPH_IRI =", DEFAULT_MODEL_GRAPH_IRI)
     print("DEFAULT_IMPORT_XML_PATH =", input_path.resolve())
     print("INPUT EXISTS =", input_path.exists())
+    print("Actual path used:", str(input_path))
 
     service = ImportXmlToCanonicalRdfService(
         graphdb_base_url=GRAPHDB_BASE_URL,

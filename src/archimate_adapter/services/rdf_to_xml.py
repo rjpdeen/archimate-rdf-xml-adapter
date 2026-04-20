@@ -146,12 +146,28 @@ def element_dto_from_row(
             f"{element_iri} vs {identifier}"
         )
 
+    xml_type = element_registry.xml_type_for_class(rdf_type)
+    exchange_type = element_registry.exchange_type_for_class(rdf_type)
+
+    # Handle junctions: if it's a Junction, determine XML type from junctionType
+    junction_type = _optional_str(row, "junctionType")
+    if rdf_type == "https://purl.org/archimate#Junction":
+        if junction_type == "and":
+            xml_type = "AndJunction"
+            exchange_type = "AndJunction"
+        elif junction_type == "or":
+            xml_type = "OrJunction"
+            exchange_type = "OrJunction"
+        else:
+            raise ValueError(f"Unknown junctionType for Junction element: {junction_type}")
+
     return ElementDTO(
         identifier=identifier,
-        xml_type=element_registry.xml_type_for_class(rdf_type),
-        exchange_type=element_registry.exchange_type_for_class(rdf_type),
+        xml_type=xml_type,
+        exchange_type=exchange_type,
         name=_optional_str(row, "name"),
         documentation=_optional_str(row, "documentation"),
+        junction_type=junction_type,
     )
 
 

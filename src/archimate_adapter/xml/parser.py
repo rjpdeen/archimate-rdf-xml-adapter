@@ -4,7 +4,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from archimate_adapter.dto.model import ElementDTO, RelationshipDTO, ModelDTO
-from archimate_adapter.services.xml_to_rdf import (
+from archimate_adapter.mapping.registry import (
     ElementTypeRegistry,
     RelationshipTypeRegistry,
 )
@@ -65,27 +65,36 @@ def _assert_is_model_root(root: ET.Element) -> None:
             f"Expected root tag '{expected_tag}', got '{root.tag}'."
         )
 
+    # Some valid Archi exports omit the version attribute on the root <model>.
+    # Accept missing version for compatibility, but still reject unexpected values
+    # when a version is explicitly present.
     version = root.get("version")
-    if version != "1.0":
-        raise ArchimateXmlParseError(
-            f"Expected ArchiMate Exchange XML version '1.0', got '{version}'."
-        )
+    if version is not None:
+        version = version.strip()
+        if version != "1.0":
+            raise ArchimateXmlParseError(
+                f"Expected ArchiMate Exchange XML version '1.0', got '{version}'."
+            )
 
 
 def _parse_element(element_el: ET.Element) -> ElementDTO:
     identifier = _required_attr(element_el, "identifier")
     xml_type = _required_xsi_type(element_el)
 
-    if xml_type not in ELEMENT_REGISTRY.xml_to_class:
+    if xml_type not in ELEMENT_REGISTRY.xml_to_rdf_map:
         raise ArchimateXmlParseError(
             f"Unsupported element xsi:type '{xml_type}' for element '{identifier}'."
         )
 
+    junction_type = ELEMENT_REGISTRY.junction_type_for_xml_type(xml_type)
+
     return ElementDTO(
         identifier=identifier,
         xml_type=xml_type,
+        exchange_type=xml_type,  # For now, same as xml_type
         name=_parse_text_child(element_el, "name"),
         documentation=_parse_text_child(element_el, "documentation"),
+        junction_type=junction_type,
     )
 
 
@@ -93,7 +102,7 @@ def _parse_relationship(rel_el: ET.Element) -> RelationshipDTO:
     identifier = _required_attr(rel_el, "identifier")
     xml_type = _required_xsi_type(rel_el)
 
-    if xml_type not in RELATIONSHIP_REGISTRY.xml_to_config:
+    if xml_type not in RELATIONSHIP_REGISTRY.xml_to_rdf_map:
         raise ArchimateXmlParseError(
             f"Unsupported relationship xsi:type '{xml_type}' for relationship '{identifier}'."
         )

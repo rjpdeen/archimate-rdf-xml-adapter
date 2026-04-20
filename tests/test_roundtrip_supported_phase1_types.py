@@ -207,6 +207,8 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "Resource",
             "ValueStream",
             "WorkPackage",
+            "AndJunction",
+            "OrJunction",
         ]:
             assert f'xsi:type="{xml_type}"' in exported_xml
 
@@ -306,6 +308,8 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "resource-1",
             "valuestream-1",
             "workpackage-1",
+            "and-junction-1",
+            "or-junction-1",
         ]:
             assert f'identifier="{identifier}"' in exported_xml
 
@@ -354,6 +358,10 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
             "rel-43",
             "rel-44",
             "rel-45",
+            "rel-46",
+            "rel-47",
+            "rel-48",
+            "rel-49",
         ]:
             assert f'identifier="{rel_id}"' in exported_xml
 
@@ -449,6 +457,10 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{resource_iri}> rdf:type archimate:Resource .
                 <{valuestream_iri}> rdf:type archimate:ValueStream .
                 <{workpackage_iri}> rdf:type archimate:WorkPackage .
+                <{EX_NS}and-junction-1> rdf:type archimate:Junction ;
+                  archimate:junctionType "and" .
+                <{EX_NS}or-junction-1> rdf:type archimate:Junction ;
+                  archimate:junctionType "or" .
 
                 <{app_iri}> archimate:serving <{actor_iri}> .
                 <{actor_iri}> archimate:assignment <{process_iri}> .
@@ -499,6 +511,10 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                 <{driver_iri}> archimate:influence <{goal_iri}> .
                 <{requirement_iri}> archimate:realization <{goal_iri}> .
                 <{stakeholder_iri}> archimate:association <{goal_iri}> .
+                <{busevt_iri}> archimate:triggering <{EX_NS}and-junction-1> .
+                <{EX_NS}and-junction-1> archimate:triggering <{busproc2_iri}> .
+                <{appevt2_iri}> archimate:triggering <{EX_NS}or-junction-1> .
+                <{EX_NS}or-junction-1> archimate:triggering <{busproc3_iri}> .
 
                 << <{app_iri}> archimate:serving <{actor_iri}> >>
                   archimate:identifier "rel-1" .
@@ -587,6 +603,20 @@ def test_roundtrip_supported_phase1_types(tmp_path: Path) -> None:
                   archimate:identifier "rel-41" .
                 << <{distribution_iri}> archimate:flow <{equipment_iri}> >>
                   archimate:identifier "rel-42" .
+                << <{driver_iri}> archimate:influence <{goal_iri}> >>
+                  archimate:identifier "rel-43" .
+                << <{requirement_iri}> archimate:realization <{goal_iri}> >>
+                  archimate:identifier "rel-44" .
+                << <{stakeholder_iri}> archimate:association <{goal_iri}> >>
+                  archimate:identifier "rel-45" .
+                << <{busevt_iri}> archimate:triggering <{EX_NS}and-junction-1> >>
+                  archimate:identifier "rel-46" .
+                << <{EX_NS}and-junction-1> archimate:triggering <{busproc2_iri}> >>
+                  archimate:identifier "rel-47" .
+                << <{appevt2_iri}> archimate:triggering <{EX_NS}or-junction-1> >>
+                  archimate:identifier "rel-48" .
+                << <{EX_NS}or-junction-1> archimate:triggering <{busproc3_iri}> >>
+                  archimate:identifier "rel-49" .
               }}
             }}
             """

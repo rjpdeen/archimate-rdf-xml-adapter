@@ -396,6 +396,16 @@
       <name xml:lang="en">Resolve Case</name>
       <documentation xml:lang="en">Business process for resolving a case.</documentation>
     </element>
+
+    <element identifier="and-junction-1" xsi:type="AndJunction">
+      <name xml:lang="en">And Junction</name>
+      <documentation xml:lang="en">Junction requiring all conditions to be met.</documentation>
+    </element>
+
+    <element identifier="or-junction-1" xsi:type="OrJunction">
+      <name xml:lang="en">Or Junction</name>
+      <documentation xml:lang="en">Junction requiring at least one condition to be met.</documentation>
+    </element>
   </elements>
 
   <relationships>
@@ -749,6 +759,38 @@
                   xsi:type="Association">
       <name xml:lang="en">is interested in</name>
       <documentation xml:lang="en">Stakeholder is associated with the business goal.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-46"
+                  source="busevt-1"
+                  target="and-junction-1"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">Business event triggers the AndJunction for conditional processing.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-47"
+                  source="and-junction-1"
+                  target="busproc-2"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">AndJunction triggers the review process when all conditions are met.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-48"
+                  source="appevt-2"
+                  target="or-junction-1"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">Application event triggers the OrJunction for alternative processing.</documentation>
+    </relationship>
+
+    <relationship identifier="rel-49"
+                  source="or-junction-1"
+                  target="busproc-3"
+                  xsi:type="Triggering">
+      <name xml:lang="en">triggers</name>
+      <documentation xml:lang="en">OrJunction triggers the resolve process when at least one condition is met.</documentation>
     </relationship>
   </relationships>
 </model>

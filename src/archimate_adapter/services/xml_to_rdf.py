@@ -15,7 +15,7 @@ class XmlToRdfError(ValueError):
 
 @dataclass(slots=True)
 class ElementTypeRegistry:
-    xml_to_class: dict[str, str]
+    xml_to_config: dict[str, dict[str, str]]
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> "ElementTypeRegistry":
@@ -23,7 +23,7 @@ class ElementTypeRegistry:
             data = yaml.safe_load(handle) or {}
 
         xml_to_rdf = data.get("xml_to_rdf", {})
-        mapping: dict[str, str] = {}
+        mapping: dict[str, dict[str, str]] = {}
 
         for xml_type, config in xml_to_rdf.items():
             rdf_class = config.get("rdf_class")
@@ -31,18 +31,24 @@ class ElementTypeRegistry:
                 raise ValueError(
                     f"Missing rdf_class for xml type '{xml_type}' in {path}"
                 )
-            mapping[xml_type] = rdf_class
+            mapping[xml_type] = config
 
-        return cls(xml_to_class=mapping)
+        return cls(xml_to_config=mapping)
 
     def rdf_class_for_xml_type(self, xml_type: str) -> str:
         try:
-            return self.xml_to_class[xml_type]
+            return self.xml_to_config[xml_type]["rdf_class"]
         except KeyError as exc:
             raise KeyError(f"No RDF class configured for XML type: {xml_type}") from exc
 
+    def junction_type_for_xml_type(self, xml_type: str) -> str | None:
+        try:
+            return self.xml_to_config[xml_type].get("junction_type")
+        except KeyError:
+            return None
+
     def supported_element_type_iris(self) -> list[str]:
-        return list(self.xml_to_class.values())
+        return [config["rdf_class"] for config in self.xml_to_config.values()]
 
 
 @dataclass(slots=True)
@@ -132,6 +138,10 @@ def _element_block(
         lines.append(
             f'{indent}  dct:description "{_escape_string(element.documentation)}"@en'
         )
+
+    if element.junction_type:
+        lines[-1] += " ;"
+        lines.append(f'{indent}  archimate:junctionType "{_escape_string(element.junction_type)}"')
 
     lines[-1] += " ."
     return lines + [""]

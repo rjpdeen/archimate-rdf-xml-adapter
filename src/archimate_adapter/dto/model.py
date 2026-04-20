@@ -9,6 +9,7 @@ class ElementDTO:
     name: Optional[str] = None
     documentation: Optional[str] = None
     exchange_type: Optional[str] = None
+    junction_type: Optional[str] = None
 
 
 @dataclass(slots=True)

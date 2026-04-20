@@ -14,7 +14,7 @@ def select_elements_query(graph_iri: str | None = None) -> str:
         PREFIX archimate: <{ARCHIMATE_NS}>
         PREFIX dct: <{DCT_NS}>
 
-        SELECT ?element ?type ?id ?name ?documentation
+        SELECT ?element ?type ?id ?name ?documentation ?junctionType
         WHERE {{
           {graph_open}
           ?element rdf:type ?type ;
@@ -24,6 +24,7 @@ def select_elements_query(graph_iri: str | None = None) -> str:
 
           OPTIONAL {{ ?element archimate:name ?name . }}
           OPTIONAL {{ ?element dct:description ?documentation . }}
+          OPTIONAL {{ ?element archimate:junctionType ?junctionType . }}
           {graph_close}
         }}
         ORDER BY ?id

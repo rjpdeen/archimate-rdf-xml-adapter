@@ -1,6 +1,6 @@
 # ArchiMate RDF to XML Adapter
 
-Phase 1 prototype for roundtrip between ArchiMate Exchange XML and canonical RDF, without views, layout, or diagram information.
+Phase 1 prototype for roundtrip between ArchiMate Exchange XML and canonical RDF, without views, viewpoints, layout, or diagram information.
 
 ## Purpose
 
@@ -8,12 +8,13 @@ This repository contains a prototype adapter for importing ArchiMate Exchange XM
 
 The focus in **Phase 1** is on:
 
-- roundtrip of **elements and relationships**
+- roundtrip of **all ArchiMate element and relationship types in the language metamodel**
 - using **GraphDB** as the canonical backend
 - using the **Mendoza ArchiMate ontology** as the RDF vocabulary
 - preserving **relationship metadata** via **RDF-star**
 - **not** supporting:
   - views
+  - viewpoints
   - layout / diagram information
   - bendpoints
   - style / visual properties
@@ -42,7 +43,8 @@ Then start GraphDB:
 cd docker/graphdb
 docker compose up -d
 ```
-You should see a repo and loaded base model in GraphDB after a while.
+
+You should see a repository and loaded base model in GraphDB after a while.
 
 View logs if needed:
 
@@ -200,21 +202,33 @@ Important:
 
 ## Phase 1 scope
 
-This phase supports only the **Business** and **Application** scope of the adapter, without diagram information.
+This phase supports the full ArchiMate language metamodel for **elements** and **relationships**, with the explicit exception of:
+
+- views
+- viewpoints
+- layout / diagram information
+
+That means the adapter now covers all layers and the generic language concepts at the model level:
+
+- Strategy
+- Business
+- Application
+- Technology
+- Physical
+- Motivation
+- Implementation & Migration
+- Other generic concepts such as Grouping, Location, and Junction
 
 ## Supported element types
 
-### Application layer
+The current mappings cover all ArchiMate element types in the language metamodel, excluding view/viewpoint constructs.
 
-- ApplicationComponent
-- ApplicationCollaboration
-- ApplicationInterface
-- ApplicationFunction
-- ApplicationProcess
-- ApplicationInteraction
-- ApplicationEvent
-- ApplicationService
-- DataObject
+### Strategy layer
+
+- Capability
+- CourseOfAction
+- Resource
+- ValueStream
 
 ### Business layer
 
@@ -229,14 +243,76 @@ This phase supports only the **Business** and **Application** scope of the adapt
 - BusinessService
 - BusinessObject
 - Contract
-- Product
 - Representation
+- Product
+
+### Application layer
+
+- ApplicationComponent
+- ApplicationCollaboration
+- ApplicationInterface
+- ApplicationFunction
+- ApplicationProcess
+- ApplicationInteraction
+- ApplicationEvent
+- ApplicationService
+- DataObject
+
+### Technology layer
+
+- Node
+- Device
+- SystemSoftware
+- TechnologyCollaboration
+- TechnologyInterface
+- TechnologyFunction
+- TechnologyProcess
+- TechnologyInteraction
+- TechnologyEvent
+- TechnologyService
+- Path
+- CommunicationNetwork
+
+### Physical layer
+
+- Equipment
+- Facility
+- DistributionNetwork
+- Material
+
+### Motivation layer
+
+- Stakeholder
+- Driver
+- Assessment
+- Goal
+- Outcome
+- Principle
+- Requirement
+- Constraint
+- Meaning
+- Value
+
+### Implementation & Migration layer
+
+- WorkPackage
+- Deliverable
+- ImplementationEvent
+- Plateau
+- Gap
+
+### Other / generic concepts
+
+- Grouping
+- Location
+- AndJunction
+- OrJunction
 
 Note: this project uses `Contract` consistently to align with the ArchiMate Exchange format. This is a deliberate deviation from upstream Mendoza naming on this point.
 
 ## Supported relationship types
 
-The current Phase 1 prototype supports the following relationship types:
+The current mappings cover all ArchiMate relationship types:
 
 - Access
 - Aggregation
@@ -254,14 +330,13 @@ The current Phase 1 prototype supports the following relationship types:
 
 Phase 1 does **not** yet support:
 
-- Motivation, Technology, Physical, Strategy, or Implementation and Migration layers beyond the currently listed subset
 - views
+- viewpoints
 - node / connection layout
 - styles
 - bendpoints
-- labels beyond element / relationship metadata
 - diagram-level information
-- full ArchiMate language coverage
+- view-specific labels or presentation metadata
 
 ## Important integrity rules
 
@@ -270,6 +345,7 @@ The `assert_canonical_graph_integrity.py` service checks, among other things:
 - quoted relationship metadata must have a corresponding base triple
 - a quoted relationship triple must not have more than one `archimate:identifier`
 - relationship endpoints must exist and must have supported ArchiMate element types
+- junctions must remain semantically distinguishable as AND vs OR in the canonical form / export flow
 
 ## Repository structure
 
@@ -338,7 +414,6 @@ archimate-rdf-xml-adapter/
 - GraphDB
 - pytest
 
-
 ## How the adapter works
 
 ### XML to RDF
@@ -369,14 +444,13 @@ But instead:
 
 This keeps the canonical form close to the Mendoza ontology.
 
-
 ## Status
 
-The Phase 1 prototype adapter now supports a broad Business and Application subset with roundtrip through GraphDB and RDF-star relationship metadata.
+The Phase 1 prototype adapter now supports the full ArchiMate language metamodel for elements and relationships, with roundtrip through GraphDB and RDF-star relationship metadata.
 
-The next logical step after Phase 1 is extension toward:
+The main remaining gap relative to full ArchiMate Exchange support is not the language metamodel itself, but the presentation side of the exchange format:
 
-- additional ArchiMate layers
-- views / diagram information
-- broader language coverage
-- stronger validation
+- views
+- viewpoints
+- diagram/layout information
+- styling and other visual metadata

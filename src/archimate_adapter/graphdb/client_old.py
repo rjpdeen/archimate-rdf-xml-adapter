@@ -75,7 +75,9 @@ class GraphDBClient:
         payload = response.json()
         value = payload.get("boolean")
         if not isinstance(value, bool):
-            raise GraphDBClientError(f"Unexpected ASK response payload: {payload}")
+            raise GraphDBClientError(
+                f"Unexpected ASK response payload: {payload}"
+            )
         return value
 
     def update(self, query: str) -> None:
@@ -89,10 +91,6 @@ class GraphDBClient:
             timeout=self.timeout_seconds,
         )
         self._raise_for_status(response, "SPARQL UPDATE failed")
-
-    def clear_graph(self, graph_iri: str) -> None:
-        """Delete all statements from a single named graph."""
-        self.update(f"CLEAR GRAPH <{graph_iri}>")
 
     def upload_file(
         self,

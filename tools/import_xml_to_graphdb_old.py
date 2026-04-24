@@ -6,9 +6,6 @@ from archimate_adapter.config import (
     ELEMENT_MAPPING_PATH,
     GRAPHDB_BASE_URL,
     GRAPHDB_REPOSITORY_ID,
-    GRAPH_TARGET_STRATEGY,
-    IMPORT_MODE,
-    PER_FILE_GRAPH_BASE_IRI,
     RELATIONSHIP_MAPPING_PATH,
 )
 from archimate_adapter.services.import_xml_to_canonical_rdf import (
@@ -18,14 +15,9 @@ from archimate_adapter.services.import_xml_to_canonical_rdf import (
 
 def main() -> None:
     input_path = Path(DEFAULT_IMPORT_XML_PATH)
-    replace_graph = IMPORT_MODE == "replace"
-
     print("GRAPHDB_BASE_URL =", GRAPHDB_BASE_URL)
     print("GRAPHDB_REPOSITORY_ID =", GRAPHDB_REPOSITORY_ID)
     print("DEFAULT_MODEL_GRAPH_IRI =", DEFAULT_MODEL_GRAPH_IRI)
-    print("GRAPH_TARGET_STRATEGY =", GRAPH_TARGET_STRATEGY)
-    print("IMPORT_MODE =", IMPORT_MODE)
-    print("PER_FILE_GRAPH_BASE_IRI =", PER_FILE_GRAPH_BASE_IRI)
     print("DEFAULT_IMPORT_XML_PATH =", input_path.resolve())
     print("INPUT EXISTS =", input_path.exists())
     print("Actual path used:", str(input_path))
@@ -36,13 +28,11 @@ def main() -> None:
         element_mapping_path=str(ELEMENT_MAPPING_PATH),
         relationship_mapping_path=str(RELATIONSHIP_MAPPING_PATH),
         graph_iri=DEFAULT_MODEL_GRAPH_IRI,
-        replace_graph=replace_graph,
-        graph_target_strategy=GRAPH_TARGET_STRATEGY,
-        per_file_graph_base_iri=PER_FILE_GRAPH_BASE_IRI,
+        replace_graph=True,
     )
 
-    imported_graph_iri = service.import_from_file(str(input_path))
-    print(f"Import completed into graph: {imported_graph_iri}")
+    service.import_from_file(str(input_path))
+    print(f"Import completed into graph: {DEFAULT_MODEL_GRAPH_IRI}")
 
 
 if __name__ == "__main__":

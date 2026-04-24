@@ -200,6 +200,83 @@ Important:
 - importing an XML file creates or updates a **separate model graph** in GraphDB
 - relationship metadata belongs to the quoted triple, not to the relationship property itself
 
+## Configuration: import behavior and named graphs
+
+The behavior of XML import into GraphDB can be configured via:
+
+```
+src/archimate_adapter/config.py
+```
+
+In addition to the base settings such as `GRAPHDB_BASE_URL`, `GRAPHDB_REPOSITORY_ID`, and `DEFAULT_MODEL_GRAPH_IRI`, the import supports configurable strategies for:
+
+- **graph replacement vs append**
+- **single graph vs per-file named graphs**
+
+### Import modes
+
+The import behavior is controlled by the concept of **replace vs append**:
+
+- **replace (overwrite)**  
+  The target named graph is cleared before importing new data.
+
+- **append**  
+  The existing data in the graph is preserved and new triples are added.
+
+In the current implementation this is controlled via the `replace_graph` flag:
+
+```python
+replace_graph = True   # replace (clear graph before import)
+replace_graph = False  # append (do not clear graph)
+```
+
+### Graph target strategies
+
+The import can target either a single graph or a separate graph per XML file:
+
+- **single graph**  
+  All imported data is written to one fixed graph:
+  ```
+  DEFAULT_MODEL_GRAPH_IRI
+  ```
+
+- **per-file graphs**  
+  Each XML file is imported into its own named graph, derived from the file name:
+
+  ```
+  <base_graph_iri>/<filename>
+  ```
+
+  Example:
+  ```
+  https://example.org/graph/model/packageA
+  https://example.org/graph/model/packageB
+  ```
+
+This strategy enables multiple XML files (e.g. multiple Sparx packages) to coexist in the same repository without overwriting each other.
+
+### Recommended usage
+
+For simple roundtrip scenarios:
+
+- use **single graph + replace**
+
+For multi-source ingestion and integration scenarios:
+
+- use **per-file graphs + append**
+
+This allows:
+
+- importing multiple models independently
+- inspecting each model in isolation
+- performing controlled merge and deduplication in a later step
+
+### Important notes
+
+- The **default graph** always contains the ontology/base model and is not affected by XML import.
+- Imported models are always written to **named graphs**.
+- When using append mode in a single graph, duplicate elements may be created if identifiers are not aligned.
+
 ## Phase 1 scope
 
 This phase supports the full ArchiMate language metamodel for **elements** and **relationships**, with the explicit exception of:

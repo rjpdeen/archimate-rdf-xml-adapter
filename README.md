@@ -521,6 +521,119 @@ But instead:
 
 This keeps the canonical form close to the Mendoza ontology.
 
+## Additional tools
+
+This repository contains a small set of utility scripts in the `tools/` folder that support analysis and visualization of the canonical RDF model in GraphDB.
+
+These tools are **not part of the core adapter functionality**, but are useful for:
+
+- inspecting SPARQL query results
+- preparing data for visualization
+- simplifying identifiers for readability
+
+---
+
+### 1. SPARQL TSV(S) to yEd GraphML
+
+`tools/tsvs_to_graphml.py`
+
+This script converts SPARQL query results exported from GraphDB (in `.tsvs` format) into a **GraphML file** that can be opened in a tool like **yEd Graph Editor**.
+
+#### Purpose
+
+- visualize model fragments (e.g. integrations, motivation relationships)
+- create quick architecture views without manual drawing
+- inspect relationships between elements
+
+#### Expected input
+
+The script expects a SPARQL `SELECT` result with columns such as:
+
+source  
+sourceLabel  
+sourceType  
+relation  
+relationLabel  
+target  
+targetLabel  
+targetType  
+
+#### Usage
+
+```powershell
+py tools/tsvs_to_graphml.py
+```
+
+Input and output files are configured at the top of the script.
+
+#### Output
+
+- a `.graphml` file that can be opened directly in yEd
+- nodes styled based on element type (e.g. ApplicationComponent, BusinessProcess, ApplicationService)
+- edges labeled using the relation label
+
+#### Notes
+
+- the script handles GraphDB-specific TSV quirks (e.g. `?column` names, `<URI>` formatting)
+- nodes without relations are also included in the graph
+- layout is not predefined; use yEd layout algorithms (e.g. Hierarchical, Organic)
+
+---
+
+### 2. GUID / EAID shortening tool
+
+`tools/shorten_guids.py`
+
+This script replaces GUIDs and Enterprise Architect identifiers with short readable IDs such as:
+
+ID1, ID2, ID3, ...
+
+#### Purpose
+
+- improve readability of RDF exports, logs, or debug output
+- simplify comparison of large files
+- reduce noise caused by long identifiers
+
+#### Supported formats
+
+- standard GUIDs
+- Enterprise Architect IDs (EAID_...)
+
+#### Usage
+
+```powershell
+py tools/shorten_guids.py
+```
+
+#### Output
+
+- transformed text with short IDs
+- a mapping file linking short IDs back to original identifiers
+
+---
+
+### Typical workflow
+
+SPARQL SELECT → export as .tsvs → tsvs_to_graphml.py → open in yEd
+
+Optional:
+
+RDF export → shorten_guids.py → inspect / compare
+
+---
+
+### Important note
+
+These tools are intended for **analysis and visualization only**.
+
+They do not:
+
+- modify the canonical RDF model
+- affect the XML ↔ RDF roundtrip
+- enforce ArchiMate semantics
+
+They operate purely on exported data.
+
 ## Status
 
 The Phase 1 prototype adapter now supports the full ArchiMate language metamodel for elements and relationships, with roundtrip through GraphDB and RDF-star relationship metadata.

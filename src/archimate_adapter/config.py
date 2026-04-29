@@ -20,5 +20,5 @@ PER_FILE_GRAPH_BASE_IRI = DEFAULT_MODEL_GRAPH_IRI
 ELEMENT_MAPPING_PATH = Path("src/archimate_adapter/mapping/element_types.yaml")
 RELATIONSHIP_MAPPING_PATH = Path("src/archimate_adapter/mapping/relationship_types.yaml")
 
-DEFAULT_IMPORT_XML_PATH = Path("out/RVO/GLB23-27_42.xml")
+DEFAULT_IMPORT_XML_PATH = Path("out/input.xml")
 DEFAULT_EXPORT_XML_PATH = Path("out/exported-from-graphdb.xml")
